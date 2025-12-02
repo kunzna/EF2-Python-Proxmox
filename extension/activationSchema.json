@@ -1,0 +1,155 @@
+{
+  "types": {
+    "dynatrace.datasource.python:proxmox-endpoint": {
+      "type": "object",
+      "displayName": "Proxmox Endpoint",
+      "summaryPattern": "Proxmox {cluster_name}",
+      "properties": {
+        "cluster_name": {
+          "displayName": "Cluster name",
+          "description": "A friendly name for this Proxmox cluster or node.",
+          "type": "text",
+          "nullable": false,
+          "default": "",
+          "constraints": [
+            {
+              "type": "LENGTH",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          ],
+          "maxItems": 1
+        },
+        "host": {
+          "displayName": "Host IP Address",
+          "description": "The IP Address of the master cluster node.",
+          "type": "list",
+          "nullable": false,
+          "default": ["127.0.0.1"],
+          "items": {
+            "type": "text",
+            "subType": "",
+            "displayName": "Cluster Node IP Address",
+            "description": "The IP Address of the master cluster node.",
+            "constraints": [
+                {
+                "type": "LENGTH",
+                "minLength": 1,
+                "maxLength": 500
+                }
+            ]
+          },
+          "minObjects": 1,
+          "maxObjects": 1
+        },        
+        "user": {
+          "displayName": "User Name",
+          "type": "text",
+          "nullable": false,
+          "default": "root@pam",
+          "constraints": [
+            {
+              "type": "LENGTH",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          ],
+          "maxItems": 1
+        },
+        "token_name": {
+          "displayName": "Token Name",
+          "type": "text",
+          "nullable": false,
+          "default": "api",
+          "constraints": [
+            {
+              "type": "LENGTH",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          ],
+          "maxItems": 1
+        },
+          "token_value": {
+          "displayName": "Token Value",
+          "type": "secret",
+          "nullable": false,
+          "default": "",
+          "constraints": [
+            {
+              "type": "LENGTH",
+              "minLength": 1,
+              "maxLength": 500
+            }
+          ],
+          "maxItems": 1
+        }
+      }
+    },
+    "pythonRemote": {
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "displayName": "Proxmox endpoint",
+          "type": "list",
+          "items": {
+            "type": {
+              "$ref": "#/types/dynatrace.datasource.python:proxmox-endpoint"
+            }
+          },
+          "nullable": false,
+          "minItems": 1,
+          "maxItems": 1,
+          "metaData": {
+            "addItemButton": "Add endpoint"
+          }
+        }
+      }
+    },
+    "pythonLocal": {
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "displayName": "Proxmox endpoint",
+          "type": "list",
+          "items": {
+            "type": {
+              "$ref": "#/types/dynatrace.datasource.python:proxmox-endpoint"
+            }
+          },
+          "nullable": false,
+          "minItems": 1,
+          "maxItems": 1,
+          "metaData": {
+            "addItemButton": "Add endpoint"
+          }
+        }
+      }
+    }
+  },
+  "dynatrace": "1",
+  "description": "proxmox configuration",
+  "schemaId": "python-extension.activation",
+  "displayName": "proxmox configuration",
+  "ownerProductManagement": "dynatrace",
+  "ownerDevelopment": "dynatrace",
+  "maturity": "GENERAL_AVAILABILITY",
+  "allowedScopes": [
+    "tenant"
+  ],
+  "multiObject": false,
+  "properties": {
+    "pythonLocal": {
+      "displayName": "Python Local Extension",
+      "type": {
+        "$ref": "#/types/pythonLocal"
+      }
+    },
+    "pythonRemote": {
+      "displayName": "Python Remote Extension",
+      "type": {
+        "$ref": "#/types/pythonRemote"
+      }
+    }
+  }
+}
