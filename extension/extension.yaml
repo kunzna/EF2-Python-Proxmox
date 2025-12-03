@@ -1,5 +1,5 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.4
+version: 0.0.6
 minDynatraceVersion: 1.303.0
 minEECVersion: "1.303.0"
 author:
@@ -1326,9 +1326,9 @@ topology:
   - name: proxmox:node
     displayName: Node
     rules:
-    - idPattern: proxmox_cluster_{cluster}_{node}
-      instanceNamePattern: '{cluster}'
-      iconPattern: cluster
+    - idPattern: proxmox_node_{cluster}_{node}
+      instanceNamePattern: '{nodeid}'
+      iconPattern: server
       attributes:
       - key: cluster
         displayName: Cluster Name
@@ -1367,9 +1367,9 @@ topology:
   - name: proxmox:vm
     displayName: Virtual Machine
     rules:
-    - idPattern: proxmox_cluster_{cluster}_{node}_{vmid}
-      instanceNamePattern: '{cluster}'
-      iconPattern: cluster
+    - idPattern: proxmox_vm_{cluster}_{node}_{vmid}
+      instanceNamePattern: '{vmid}'
+      iconPattern: vm
       attributes:
       - key: cluster
         displayName: Cluster Name
@@ -1402,9 +1402,9 @@ topology:
   - name: proxmox:container
     displayName: Virtual Machine
     rules:
-    - idPattern: proxmon_cluster_{cluster}_{node}_{lxcid}
-      instanceNamePattern: '{cluster}'
-      iconPattern: cluster
+    - idPattern: proxmon_container_{cluster}_{node}_{lxcid}
+      instanceNamePattern: '{lxcid}'
+      iconPattern: container
       attributes:
       - key: cluster
         displayName: Cluster Name

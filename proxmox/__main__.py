@@ -308,7 +308,8 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     vm_name = entry.get("name")
                     vm_id = entry.get("vmid")
 
-                    all_ips = []
+                    #all_ips = []
+                    all_ips = ''
 
                     try:
                         vmIPSubRequest = nodeVmRequest + "/" + str(vm_id) + "/agent/network-get-interfaces"
@@ -320,9 +321,9 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                             for ip in interface.get('ip-addresses', []):
                                 ip_addr = ip.get('ip-address')
                                 if ip_addr and ip_addr != '127.0.0.1' and ':' not in ip_addr:  # exclude loopback and IPv6
-                                    self.logger.info(f"    IP: {ip_addr} | MAC: {mac_addr}")
-                                    all_ips.append(ip_addr)
-                                    self.logger.info(f"Collected IP: {all_ips} for VM: {vm_name} (ID: {vm_id}) on node: {node_name}")
+                                    # self.logger.info(f"    IP: {ip_addr} | MAC: {mac_addr}")
+                                    all_ips = ip_addr #if all_ips == '' else all_ips + ', ' + ip_addr
+                                    # self.logger.info(f"Collected IP: {all_ips} for VM: {vm_name} (ID: {vm_id}) on node: {node_name}")
                     except Exception as e:
                         print(f"    Could not retrieve IP/MAC: {e}")
 
