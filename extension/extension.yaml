@@ -1,7 +1,7 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.6
-minDynatraceVersion: 1.303.0
-minEECVersion: "1.303.0"
+version: 0.0.12
+minDynatraceVersion: 1.309.0
+minEECVersion: "1.309.0"
 author:
   name: "Dynatrace"
 python:
@@ -1400,7 +1400,7 @@ topology:
         condition: $prefix(proxmox.vm.)
 
   - name: proxmox:container
-    displayName: Virtual Machine
+    displayName: Container
     rules:
     - idPattern: proxmon_container_{cluster}_{node}_{lxcid}
       instanceNamePattern: '{lxcid}'
@@ -1564,3 +1564,8 @@ screens:
           metricSelector: proxmox.cluster.nodes.online.count
         showSparkline: true
         showTrend: true
+
+documents:
+  dashboards:
+    - displayName: Proxmox Overview Dashboard Overview
+      path: documents/proxmox_overview_dashboard_overview.dashboard.json
