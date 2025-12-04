@@ -58,8 +58,13 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
         endpoint.initialize_proxmoxapi()
 
         # Fetch cluster status
-        cluster_status = json.loads(json.dumps(endpoint.get_cluster_status()))
+        clusterStatusRequest = "cluster/status"
+        cluster_status_get = endpoint.get_metrics(clusterStatusRequest)
         # self.logger.info(f"Collected cluster level status info")
+
+        # Parse the JSON string
+        cluster_status = json.loads(cluster_status_get)
+        self.logger.info(f"Collected cluster level status info: {cluster_status}")
 
         # Initialize containers
         cluster_info = {}
@@ -92,7 +97,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     self.logger.error(f"Unexpected item type: {type(item)} - {item}")
         else:
             self.logger.error(f"cluster_status is not a list. Check the source of the data.")
-        
+
         # Setting cluster dimension variables
         cluster_name = cluster_info.get("name")
         cluster_id = cluster_info.get("id")
@@ -120,6 +125,52 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
         )
 
         self.logger.info(f"Sent to metrics server for cluster: {cluster_name} with dimensions: {cluster_dimensions}")
+
+        # Fetch cluster HA status
+        clusterHaStatusRequest = "cluster/ha/status/current"
+        cluster_ha_status_get = endpoint.get_metrics(clusterHaStatusRequest)
+        # self.logger.info(f"Collected cluster high availability status info")
+
+        # Parse the JSON string
+        cluster_ha_status = json.loads(cluster_ha_status_get)
+        self.logger.info(f"Collected cluster high availability status info: {cluster_ha_status}")      
+
+
+        # Ensure cluster_ha_status is a list
+        if isinstance(cluster_ha_status, list):
+            cluster_ha_info = {}
+
+            for item in cluster_ha_status:
+                if isinstance(item, dict):
+                    item_type = item.get("type")
+                    if item_type == "quorum":
+                        cluster_ha_info = {
+                            "id": item.get("id"),
+                            "quorate": item.get("quorate"),
+                            "status": item.get("status")
+                        }
+                        print(f"Cluster HA Info: {cluster_ha_info}")
+                else:
+                    self.logger.error(f"Unexpected item type: {type(item)} - {item}")
+        else:
+            self.logger.error(f"cluster_status is not a list. Check the source of the data.")
+
+        cluster_ha_quorate = cluster_ha_info.get("quorate")
+        cluster_ha_status_value = cluster_ha_info.get("status")
+
+        if cluster_ha_status_value == "OK":
+            cluster_ha_status_value = 1
+        else:
+            cluster_ha_status_value = 0
+            
+        # Sending to metrics server for cluster HA info
+        self.report_metric(
+            "proxmox.cluster.ha.quorate", cluster_ha_quorate, cluster_dimensions
+        )
+
+        self.report_metric(
+            "proxmox.cluster.ha.status", cluster_ha_status_value, cluster_dimensions
+        )
 
         self.executor.submit(self.collect_nodes, endpoint, node_info_list, cluster_dimensions)
         self.executor.submit(self.collect_storage, endpoint, node_info_list, cluster_dimensions)
@@ -162,9 +213,12 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
             # Extract system metrics
             idle = node_data["idle"]
+            idle = idle * 100
             cpu = node_data["cpu"]
+            cpu = cpu * 100
             uptime = node_data["uptime"]
             wait = node_data["wait"]
+            wait = wait * 100
 
             # Extract memory metrics
             memory_used = node_data["memory"]["used"]
@@ -354,6 +408,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     vm_diskread = vm_metrics.get("diskread")
                     vm_mem = vm_metrics.get("mem")
                     vm_cpu = vm_metrics.get("cpu")
+                    vm_cpu = vm_cpu * 100
                     vm_cpus = vm_metrics.get("cpus")
                     vm_maxmem = vm_metrics.get("maxmem")
                     vm_status = vm_metrics.get("status")
@@ -449,6 +504,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     lxc_diskread = lxc_metrics.get("diskread")
                     lxc_mem = lxc_metrics.get("mem")
                     lxc_cpu = lxc_metrics.get("cpu")
+                    lxc_cpu = lxc_cpu * 100
                     lxc_cpus = lxc_metrics.get("cpus")
                     lxc_maxmem = lxc_metrics.get("maxmem")
                     lxc_status = lxc_metrics.get("status")
@@ -460,7 +516,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                         lxc_status = 1
                     else:
                         lxc_status = 0            
-            
+
                     # Build VM dimensions
                     lxc_dimensions = {
                         **parent_dimensions,

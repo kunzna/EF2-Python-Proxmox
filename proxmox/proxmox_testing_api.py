@@ -1,7 +1,7 @@
 import logging
 import json
 from proxmoxer import ProxmoxAPI
-from .common_functions import common_functions
+from common_functions import common_functions
 
 default_logger = logging.getLogger(__name__)
 default_logger.setLevel(logging.INFO)
@@ -18,6 +18,8 @@ class ProxmoxClient:
     ):
         self.logger = logger
 
+
+        self.logger = logger
         # Patch: Ensure host is always a string
         if isinstance(host, list):
             if host:
@@ -43,7 +45,42 @@ class ProxmoxClient:
             verify_ssl=self.verify_ssl
         )
         return self.api
+    
+    def get_cluster_status(self):
+        try:
+            clustersStatusJSON = self.api.cluster.status.get()
+            if not clustersStatusJSON or not isinstance(clustersStatusJSON, list):
+                raise ValueError("Unexpected response format for cluster status.")
+            elif common_functions.is_valid_json(clustersStatusJSON):
+                self.logger.info("ClustersStatusJSON is valid JSON.")
+            else:
+                self.logger.warning("Invalid JSON for clustersStatusJSON.")
+        except Exception as e:
+            self.logger.error(f"Error fetching cluster status: {e}")
+            clustersStatusJSON = []
+        self.logger.info(f"Fetch and print cluster status: {clustersStatusJSON}")
+        return clustersStatusJSON
 
+    def get_node_status(self):
+        try:
+            nodesStatusJSON = self.api.nodes.get()
+            if not nodesStatusJSON or not isinstance(nodesStatusJSON, list):
+                raise ValueError("Unexpected response format for nodes status.")
+            elif common_functions.is_valid_json(nodesStatusJSON):
+                self.logger.info("nodesStatusJSON is valid JSON.")
+            else:
+                self.logger.warning("Invalid JSON for nodesStatusJSON.")
+        except Exception as e:
+            self.logger.error(f"Error fetching nodes status: {e}")
+            nodesStatusJSON = []
+        self.logger.info(f"CFetch and print node status: {nodesStatusJSON}")
+        return nodesStatusJSON
+    
+    def get_node_info(self, nodeStatusJSON):
+        nodeNamesArray = [item['node'] for item in nodeStatusJSON]
+        self.logger.info(f"Extracted node names from nodeStatusJSON: {nodeNamesArray}")
+        return nodeNamesArray
+    
     def get_metrics(self, request):
         try:
             JSON = json.dumps(self.api(request).get())

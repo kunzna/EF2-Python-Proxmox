@@ -1,5 +1,5 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.12
+version: 0.0.21
 minDynatraceVersion: 1.309.0
 minEECVersion: "1.309.0"
 author:
@@ -21,6 +21,8 @@ python:
     metrics:
     - key: proxmox.cluster.node.count
     - key: proxmox.cluster.node.online.count
+    - key: proxmox.cluster.ha.quorate
+    - key: proxmox.cluster.ha.status
   - featureSet: Node
     metrics:
     - key: proxmox.node.online
@@ -113,6 +115,34 @@ metrics:
     tags:
     - com.dynatrace.proxmox
 
+- key: proxmox.cluster.ha.quorate
+  metadata:
+    displayName: HA Quorate
+    description: HA Quorate Status of the Cluster
+    sourceEntityType: proxmox:cluster
+    unit: Count
+    dimensions:
+    - key: cluster
+      displayName: Cluster Name
+    - key: clusterid
+      displayName: Cluster ID
+    tags:
+    - com.dynatrace.proxmox
+    
+- key: proxmox.cluster.ha.status
+  metadata:
+    displayName: HA Status
+    description: HA Status of the Cluster
+    sourceEntityType: proxmox:cluster
+    unit: State
+    dimensions:
+    - key: cluster
+      displayName: Cluster Name
+    - key: clusterid
+      displayName: Cluster ID
+    tags:
+    - com.dynatrace.proxmox
+
 - key: proxmox.node.online
   metadata:
     displayName: Online Status
@@ -175,7 +205,7 @@ metrics:
     displayName: CPU Idle
     description: The current cpu idle
     sourceEntityType: proxmox:node
-    unit: Count
+    unit: Percent
     dimensions:
     - key: cluster
       displayName: Cluster Name
@@ -848,7 +878,7 @@ metrics:
     displayName: CPU Usable
     description: Maximum usable CPUs
     sourceEntityType: proxmox:vm
-    unit: Percent
+    unit: Count
     dimensions:
     - key: cluster
       displayName: Cluster Name
@@ -1565,7 +1595,8 @@ screens:
         showSparkline: true
         showTrend: true
 
+
 documents:
   dashboards:
-    - displayName: Proxmox Overview Dashboard Overview
-      path: documents/proxmox_overview_dashboard_overview.dashboard.json
+    - displayName: Proxmox Overview
+      path: documents/proxmox_overview.dashboard.json
