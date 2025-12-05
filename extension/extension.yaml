@@ -1,6 +1,6 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.23
-minDynatraceVersion: 1.309.0
+version: 0.0.24
+minDynatraceVersion: 1.328.0
 minEECVersion: "1.309.0"
 author:
   name: "Dynatrace"
@@ -1516,100 +1516,99 @@ topology:
         destinationProperty: dt.ip_addresses
         destinationTransformation: To lower case
 
-screens:
-- entityType: proxmox:cluster
-  listSettings:
-    staticContent:
-      showGlobalFilter: false
-      header:
-        title: Proxmox Clusters
-        description: List of Proxmox Clusters
-        icon: cluster
-      breadcrumbs:
-        - type: NOOP
-          displayName: Proxmox
-        - type: ENTITY_LIST_REF
-          displayName: Clusters
-          entityType: proxmox:cluster
-    layout:
-      autoGenerate: false
-      cards:
-      - key: proxmox_cluster_charts_overview
-        type: CHART_GROUP
-      - key: proxmox_cluster_list_self
-        type: ENTITIES_LIST
-      - type: INJECTIONS    
-  detailsSettings: 
-    target: BOTH
-    staticContent:
-      showProblems: true
-      showProperties: true
-      showTags: true
-      showGlobalFilter: false
-      showAddTag: true
-      breadcrumbs:
-        - type: NOOP
-          displayName: Proxmox
-        - type: ENTITY_LIST_REF
-          displayName: Clusters
-          entityType: proxmox:cluster
-    layout:
-      autoGenerate: false
-      cards:
-      - key: proxmox_cluster_charts_overview
-        type: CHART_GROUP
-      - type: INJECTIONS
-  chartsCards:
-  - key: proxmox_cluster_charts_overview
+# screens:
+# - entityType: proxmox:cluster
+#   listSettings:
+#     staticContent:
+#       showGlobalFilter: false
+#       header:
+#         title: Proxmox Clusters
+#         description: List of Proxmox Clusters
+#         icon: cluster
+#       breadcrumbs:
+#         - type: NOOP
+#           displayName: Proxmox
+#         - type: ENTITY_LIST_REF
+#           displayName: Clusters
+#           entityType: proxmox:cluster
+#     layout:
+#       autoGenerate: false
+#       cards:
+#       - key: proxmox_cluster_charts_overview
+#         type: CHART_GROUP
+#       - key: proxmox_cluster_list_self
+#         type: ENTITIES_LIST
+#       - type: INJECTIONS    
+#   detailsSettings: 
+#     target: BOTH
+#     staticContent:
+#       showProblems: true
+#       showProperties: true
+#       showTags: true
+#       showGlobalFilter: false
+#       showAddTag: true
+#       breadcrumbs:
+#         - type: NOOP
+#           displayName: Proxmox
+#         - type: ENTITY_LIST_REF
+#           displayName: Clusters
+#           entityType: proxmox:cluster
+#     layout:
+#       autoGenerate: false
+#       cards:
+#       - key: proxmox_cluster_charts_overview
+#         type: CHART_GROUP
+#       - type: INJECTIONS
+#   chartsCards:
+#   - key: proxmox_cluster_charts_overview
 
-    target: BOTH
-    mode: NORMAL
-    numberOfVisibleCharts: 2
-    displayName: Cluster Overview
-    description: Overview of Proxmox Clusters
-    charts:
-    - displayName: Cluster Node Count
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.cluster.nodes.count
-        showSparkline: true
-        showTrend: true
+#     target: BOTH
+#     mode: NORMAL
+#     numberOfVisibleCharts: 2
+#     displayName: Cluster Overview
+#     description: Overview of Proxmox Clusters
+#     charts:
+#     - displayName: Cluster Node Count
+#       visualizationType: SINGLE_VALUE
+#       singleValueConfig:
+#         metric:
+#           metricSelector: proxmox.cluster.nodes.count
+#         showSparkline: true
+#         showTrend: true
 
-    - displayName: Cluster Node Online Count
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.cluster.nodes.online.count
-        showSparkline: true
-        showTrend: true
+#     - displayName: Cluster Node Online Count
+#       visualizationType: SINGLE_VALUE
+#       singleValueConfig:
+#         metric:
+#           metricSelector: proxmox.cluster.nodes.online.count
+#         showSparkline: true
+#         showTrend: true
 
-  entitiesListCards:
-  - key: proxmox_cluster_list_self
-    displayName: Clusters
-    pageSize: 5
-    entitiesLimit: 500
-    displayCharts: false
-    numberOfVisibleCharts: 2
-    enableDetailsExpandability: false
-    displayIcons: true
-    charts:
-    - displayName: Cluster Node Count
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.cluster.nodes.count
-        showSparkline: true
-        showTrend: true
+#   entitiesListCards:
+#   - key: proxmox_cluster_list_self
+#     displayName: Clusters
+#     pageSize: 5
+#     entitiesLimit: 500
+#     displayCharts: false
+#     numberOfVisibleCharts: 2
+#     enableDetailsExpandability: false
+#     displayIcons: true
+#     charts:
+#     - displayName: Cluster Node Count
+#       visualizationType: SINGLE_VALUE
+#       singleValueConfig:
+#         metric:
+#           metricSelector: proxmox.cluster.nodes.count
+#         showSparkline: true
+#         showTrend: true
 
-    - displayName: Cluster Node Online Count
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.cluster.nodes.online.count
-        showSparkline: true
-        showTrend: true
-
+#     - displayName: Cluster Node Online Count
+#       visualizationType: SINGLE_VALUE
+#       singleValueConfig:
+#         metric:
+#           metricSelector: proxmox.cluster.nodes.online.count
+#         showSparkline: true
+#         showTrend: true
 
 documents:
   dashboards:
