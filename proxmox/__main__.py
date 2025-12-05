@@ -24,7 +24,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
         endpoints = self.activation_config.get("endpoints")
         for endpoint in endpoints:
-            frequency = endpoint.get("frequency", 1)
+            frequency = endpoint.get("frequency", 60)  # Default to 60 seconds if not specified
 
             user_key = "user"
             host = endpoint.get("host")
@@ -41,9 +41,9 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                 verify_ssl=False
             )
 
-            # Schedule the monitor method to be run every <frequency> minutes
+            # Schedule the monitor method to be run every <frequency> seconds
             # We also pass the endpoint as a parameter to this method
-            self.schedule(self.monitor, timedelta(minutes=frequency), (endpoint,))
+            self.schedule(self.monitor, timedelta(seconds=frequency), (endpoint,))
 
     def fastcheck(self) -> Status:
         """

@@ -83,6 +83,16 @@
             }
           ],
           "maxItems": 1
+        },
+        "frequency": {
+          "displayName": "Frequency",
+          "description": "How often should we collect data (default is every minute)",
+          "type": "integer",
+          "default": 60,
+          "nullable": false,
+          "metadata": {
+            "suffix": "seconds"
+          }
         }
       }
     },
