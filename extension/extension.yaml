@@ -1,5 +1,5 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.22
+version: 0.0.23
 minDynatraceVersion: 1.309.0
 minEECVersion: "1.309.0"
 author:
@@ -23,6 +23,7 @@ python:
     - key: proxmox.cluster.node.online.count
     - key: proxmox.cluster.ha.quorate
     - key: proxmox.cluster.ha.status
+    - key: proxmox.cluster.sdn.status
   - featureSet: Node
     metrics:
     - key: proxmox.node.online
@@ -133,6 +134,20 @@ metrics:
   metadata:
     displayName: HA Status
     description: HA Status of the Cluster
+    sourceEntityType: proxmox:cluster
+    unit: State
+    dimensions:
+    - key: cluster
+      displayName: Cluster Name
+    - key: clusterid
+      displayName: Cluster ID
+    tags:
+    - com.dynatrace.proxmox
+
+- key: proxmox.cluster.sdn.status
+  metadata:
+    displayName: SDN Status
+    description: SDN Status of the Cluster
     sourceEntityType: proxmox:cluster
     unit: State
     dimensions:
