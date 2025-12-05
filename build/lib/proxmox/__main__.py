@@ -69,6 +69,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
         # Initialize containers
         cluster_info = {}
         node_info_list = []
+        sdn_info_list = []
 
         # Ensure cluster_status is a list
         if isinstance(cluster_status, list):
@@ -93,6 +94,14 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                             "ip": item.get("ip")
                         }
                         node_info_list.append(node_info)
+                    elif item_type == "sdn":
+                        sdn_info = {
+                            "id": item.get("id"),
+                            "node": item.get("node"),
+                            "status": item.get("status"),
+                            "sdn": item.get("sdn")
+                        }
+                        sdn_info_list.append(sdn_info)  
                 else:
                     self.logger.error(f"Unexpected item type: {type(item)} - {item}")
         else:
@@ -109,6 +118,18 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             if node['online'] == 1
         )
 
+        # Determine SDN status for the cluster
+        sdn_status = 1
+        for sdn in sdn_info_list:
+            if sdn_status == 1:
+                if sdn['status'] == 'ok':
+                    sdn_status = 1
+                else:
+                    sdn_status = 0
+            elif sdn_status == 0:
+                sdn_status = 0
+
+
         # Define dimensions for the cluster
         cluster_dimensions = {
             "cluster": cluster_name,
@@ -122,6 +143,10 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
         )
         self.report_metric(
             "proxmox.cluster.node.online.count", cluster_node_online_count, cluster_dimensions
+        )
+
+        self.report_metric(
+            "proxmox.cluster.sdn.status", sdn_status, cluster_dimensions
         )
 
         self.logger.info(f"Sent to metrics server for cluster: {cluster_name} with dimensions: {cluster_dimensions}")
