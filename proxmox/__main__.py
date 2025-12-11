@@ -139,10 +139,10 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
         # Sending to metrics server for cluster
         self.report_metric(
-            "proxmox.cluster.node.count", cluster_node_count, cluster_dimensions
+            "proxmox.cluster.node", cluster_node_count, cluster_dimensions
         )
         self.report_metric(
-            "proxmox.cluster.node.online.count", cluster_node_online_count, cluster_dimensions
+            "proxmox.cluster.node.online", cluster_node_online_count, cluster_dimensions
         )
 
         self.report_metric(
@@ -365,6 +365,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
     def collect_qemuvm(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch Qemu-VM metrics for each node in cluster
         for node in node_info_list:
+            node_vm_count = 0
             node_name = node['name']
             nodeRequest = "nodes/" + node_name
             nodeVmRequest = nodeRequest + "/qemu"
@@ -378,9 +379,16 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             # Extrace Node info
             node_id = node['id']
 
+            node_dimensions = {
+                **parent_dimensions,
+                "node": node_name,
+                "nodeid": node_id,
+            }
+
             # Loop through each VM entry for this node to get list of VMs
             for entry in vm_entry_data:
                 if entry.get("status") == "running":
+                    node_vm_count = node_vm_count + 1
                     vm_name = entry.get("name")
                     vm_id = entry.get("vmid")
 
@@ -489,13 +497,19 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     )
                     self.logger.info(f"Sent to metrics server for VM: {vm_name} for node: {node_name} with dimensions: {vm_dimensions}")
 
+            self.report_metric(
+                "proxmox.node.vm", node_vm_count, node_dimensions
+            )
+            self.logger.info(f"NATEKUNZ-Sent to metrics server for VM count: {node_vm_count} for node: {node_name} with dimensions: {node_dimensions}")
+
     def collect_lxc(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch LXC-Container metrics for each node in cluster
         for node in node_info_list:
+            node_lxc_count = 0
             node_name = node['name']
             nodeRequest = "nodes/" + node_name
             nodeLXCRequest = nodeRequest + "/lxc"
-            
+
             # Fetching VM metrics
             node_lxc_entries = endpoint.get_metrics_2(nodeLXCRequest)
 
@@ -505,16 +519,23 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             # Extrace Node info
             node_id = node['id']
 
+            node_dimensions = {
+                **parent_dimensions,
+                "node": node_name,
+                "nodeid": node_id,
+            }
+
             # Loop through each VM entry for this node to get list of VMs
             for entry in lxc_entry_data:
                 if entry.get("status") == "running":
+                    node_lxc_count = node_lxc_count + 1
                     lxc_name = entry.get("name")
                     lxc_id = entry.get("vmid")
 
                     # Making request to retrieve metrics for each VM running on the node.
                     nodeLXCSubRequest = nodeLXCRequest + "/" + str(lxc_id) + "/status/current"
                     node_lxc_metrics = endpoint.get_metrics_2(nodeLXCSubRequest)
-                    
+
                     lxc_metrics = json.loads(node_lxc_metrics)
 
                     lxc_netout = lxc_metrics.get("netout")
@@ -590,6 +611,11 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                         "proxmox.lxc.disk.max", lxc_maxdisk, lxc_dimensions
                     )
                     self.logger.info(f"Sent to metrics server for VM: {lxc_name} for node: {node_name} with dimensions: {lxc_dimensions}")
+
+            self.report_metric(
+                "proxmox.node.lxc", node_lxc_count, node_dimensions
+            )
+            self.logger.info(f"NATEKUNZ-Sent to metrics server for LXC count: {node_lxc_count} for node: {node_name} with dimensions: {node_dimensions}")
 
     def collect_service(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch services status for each node in cluster

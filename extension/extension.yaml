@@ -1,9 +1,13 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.33
+version: 0.0.62
 minDynatraceVersion: 1.328.0
 minEECVersion: "1.309.0"
 author:
   name: "Dynatrace"
+
+keywords:
+  - "VIRTUALIZATION"
+  - "PROXMOX"
 python:
   runtime:
     module: proxmox
@@ -19,13 +23,15 @@ python:
   featureSets:
   - featureSet: Cluster
     metrics:
-    - key: proxmox.cluster.node.count
-    - key: proxmox.cluster.node.online.count
+    - key: proxmox.cluster.node
+    - key: proxmox.cluster.node.online
     - key: proxmox.cluster.ha.quorate
     - key: proxmox.cluster.ha.status
     - key: proxmox.cluster.sdn.status
   - featureSet: Node
     metrics:
+    - key: proxmox.node.vm
+    - key: proxmox.node.lxc
     - key: proxmox.node.online
     - key: proxmox.node.cpu.usage
     - key: proxmox.node.cpu.wait
@@ -88,7 +94,7 @@ python:
     - key: proxmox.lxc.disk.max
 
 metrics:
-- key: proxmox.cluster.node.count
+- key: proxmox.cluster.node
   metadata:
     displayName: Node Count
     description: Total Nodes running in the Cluster
@@ -101,8 +107,9 @@ metrics:
       displayName: Cluster ID
     tags:
     - com.dynatrace.proxmox
+    - proxmox.cluster
 
-- key: proxmox.cluster.node.online.count
+- key: proxmox.cluster.node.online
   metadata:
     displayName: Node Online Count
     description: Total Nodes running and online in the Cluster
@@ -115,6 +122,7 @@ metrics:
       displayName: Cluster ID
     tags:
     - com.dynatrace.proxmox
+    - proxmox.cluster
 
 - key: proxmox.cluster.ha.quorate
   metadata:
@@ -129,6 +137,7 @@ metrics:
       displayName: Cluster ID
     tags:
     - com.dynatrace.proxmox
+    - proxmox.cluster
     
 - key: proxmox.cluster.ha.status
   metadata:
@@ -143,6 +152,7 @@ metrics:
       displayName: Cluster ID
     tags:
     - com.dynatrace.proxmox
+    - proxmox.cluster
 
 - key: proxmox.cluster.sdn.status
   metadata:
@@ -157,6 +167,45 @@ metrics:
       displayName: Cluster ID
     tags:
     - com.dynatrace.proxmox
+    - proxmox.cluster
+
+- key: proxmox.node.vm
+  metadata:
+    displayName: VM Count
+    description: Total VMs running on the Proxmox Node
+    sourceEntityType: proxmox:node
+    unit: Count
+    dimensions:
+    - key: cluster
+      displayName: Cluster Name
+    - key: clusterid
+      displayName: Cluster ID
+    - key: node
+      displayName: Node Name
+    - key: nodeid
+      displayName: Node ID
+    tags:
+    - com.dynatrace.proxmox
+    - proxmox.node
+
+- key: proxmox.node.lxc
+  metadata:
+    displayName: Container Count
+    description: Total Containers running on the Proxmox Node
+    sourceEntityType: proxmox:node
+    unit: Count
+    dimensions:
+    - key: cluster
+      displayName: Cluster Name
+    - key: clusterid
+      displayName: Cluster ID
+    - key: node
+      displayName: Node Name
+    - key: nodeid
+      displayName: Node ID
+    tags:
+    - com.dynatrace.proxmox
+    - proxmox.node
 
 - key: proxmox.node.online
   metadata:
@@ -1344,7 +1393,7 @@ topology:
     displayName: Cluster
     rules:
     - idPattern: proxmox_cluster_{cluster}
-      instanceNamePattern: '{cluster}'
+      instanceNamePattern: '{clusterid}'
       iconPattern: cluster
       attributes:
       - key: cluster
@@ -1367,6 +1416,8 @@ topology:
         condition: $prefix(proxmox.node.service.)
       - sourceType: Metrics
         condition: $prefix(proxmox.vm.)
+      - sourceType: Metrics
+        condition: $prefix(proxmox.lxc.)
 
   - name: proxmox:node
     displayName: Node
@@ -1408,6 +1459,8 @@ topology:
         condition: $prefix(proxmox.node.service.)
       - sourceType: Metrics
         condition: $prefix(proxmox.vm.)
+      - sourceType: Metrics
+        condition: $prefix(proxmox.lxc.)
 
   - name: proxmox:vm
     displayName: Virtual Machine
@@ -1483,6 +1536,18 @@ topology:
     sources:
     - sourceType: Metrics
       condition: $prefix(proxmox.node.)
+  - typeOfRelation: CHILD_OF
+    fromType: proxmox:vm
+    toType: proxmox:cluster
+    sources:
+    - sourceType: Metrics
+      condition: $prefix(proxmox.node.)
+  - typeOfRelation: CHILD_OF
+    fromType: proxmox:container
+    toType: proxmox:cluster
+    sources:
+    - sourceType: Metrics
+      condition: $prefix(proxmox.lxc.)
   - typeOfRelation: RUNS_ON
     fromType: proxmox:vm
     toType: proxmox:node
@@ -1516,99 +1581,201 @@ topology:
         destinationProperty: dt.ip_addresses
         destinationTransformation: To lower case
 
-# screens:
-# - entityType: proxmox:cluster
-#   listSettings:
-#     staticContent:
-#       showGlobalFilter: false
-#       header:
-#         title: Proxmox Clusters
-#         description: List of Proxmox Clusters
-#         icon: cluster
-#       breadcrumbs:
-#         - type: NOOP
-#           displayName: Proxmox
-#         - type: ENTITY_LIST_REF
-#           displayName: Clusters
-#           entityType: proxmox:cluster
-#     layout:
-#       autoGenerate: false
-#       cards:
-#       - key: proxmox_cluster_charts_overview
-#         type: CHART_GROUP
-#       - key: proxmox_cluster_list_self
-#         type: ENTITIES_LIST
-#       - type: INJECTIONS    
-#   detailsSettings: 
-#     target: BOTH
-#     staticContent:
-#       showProblems: true
-#       showProperties: true
-#       showTags: true
-#       showGlobalFilter: false
-#       showAddTag: true
-#       breadcrumbs:
-#         - type: NOOP
-#           displayName: Proxmox
-#         - type: ENTITY_LIST_REF
-#           displayName: Clusters
-#           entityType: proxmox:cluster
-#     layout:
-#       autoGenerate: false
-#       cards:
-#       - key: proxmox_cluster_charts_overview
-#         type: CHART_GROUP
-#       - type: INJECTIONS
-#   chartsCards:
-#   - key: proxmox_cluster_charts_overview
+screens:
+- entityType: proxmox:cluster
+  listSettings:
+    staticContent:
+      showGlobalFilter: false
+      header:
+        title: Proxmox Clusters
+        description: List of Proxmox Clusters
+        icon: cluster
+      breadcrumbs:
+        - type: NOOP
+          displayName: Proxmox
+        - type: ENTITY_LIST_REF
+          displayName: Clusters
+          entityType: proxmox:cluster
+    layout:
+      autoGenerate: false
+      cards:
+      - key: proxmox_cluster_charts_overview
+        type: CHART_GROUP
+      - key: proxmox_cluster_list_self
+        type: ENTITIES_LIST
+      - type: INJECTIONS    
+  detailsSettings: 
+    target: BOTH
+    staticContent:
+      showProblems: true
+      showProperties: true
+      showTags: true
+      showGlobalFilter: false
+      showAddTag: true
+      breadcrumbs:
+        - type: NOOP
+          displayName: Proxmox
+        - type: ENTITY_LIST_REF
+          displayName: Clusters
+          entityType: proxmox:cluster
+    layout:
+      autoGenerate: false
+      cards:
+      - key: proxmox_cluster_charts_overview
+        type: CHART_GROUP
+      - key: proxmox_cluster_nodes
+        type: ENTITIES_LIST
+      - type: INJECTIONS
 
-#     target: BOTH
-#     mode: NORMAL
-#     numberOfVisibleCharts: 2
-#     displayName: Cluster Overview
-#     description: Overview of Proxmox Clusters
-#     charts:
-#     - displayName: Cluster Node Count
-#       visualizationType: SINGLE_VALUE
-#       singleValueConfig:
-#         metric:
-#           metricSelector: proxmox.cluster.nodes.count
-#         showSparkline: true
-#         showTrend: true
+  chartsCards:
+  - key: proxmox_cluster_charts_overview
+    target: BOTH
+    mode: NORMAL
+    numberOfVisibleCharts: 7
+    displayName: Cluster Overview
+    description: Overview of Proxmox Clusters
+    charts:
+    - displayName: Nodes
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:
+        metric:
+          metricSelector: proxmox.node.online:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+          dqlQuery: >
+            timeseries nodes = count(proxmox.node.online, scalar: true), by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $entityId}
+            | summarize { nodes = sum(nodes)}, by:{ `dt.entity.proxmox:cluster` }
+        showSparkline: true
+        showTrend: true
 
-#     - displayName: Cluster Node Online Count
-#       visualizationType: SINGLE_VALUE
-#       singleValueConfig:
-#         metric:
-#           metricSelector: proxmox.cluster.nodes.online.count
-#         showSparkline: true
-#         showTrend: true
+    - displayName: Virtual Machines
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:
+        metric:
+          metricSelector: proxmox.node.vm:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+          dqlQuery: >
+            timeseries vms = max(proxmox.node.vm, scalar:true), by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { vms = sum(vms)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
 
-#   entitiesListCards:
-#   - key: proxmox_cluster_list_self
-#     displayName: Clusters
-#     pageSize: 5
-#     entitiesLimit: 500
-#     displayCharts: false
-#     numberOfVisibleCharts: 2
-#     enableDetailsExpandability: false
-#     displayIcons: true
-#     charts:
-#     - displayName: Cluster Node Count
-#       visualizationType: SINGLE_VALUE
-#       singleValueConfig:
-#         metric:
-#           metricSelector: proxmox.cluster.nodes.count
-#         showSparkline: true
-#         showTrend: true
+    - displayName: Containers
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:
+        metric:
+          metricSelector: proxmox.node.lxc:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+          dqlQuery: >
+            timeseries vms = max(proxmox.node.lxc, scalar:true), by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { vms = sum(vms)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
 
-#     - displayName: Cluster Node Online Count
-#       visualizationType: SINGLE_VALUE
-#       singleValueConfig:
-#         metric:
-#           metricSelector: proxmox.cluster.nodes.online.count
-#         showSparkline: true
-#         showTrend: true
+    - displayName: HA Quorate Nodes
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:  
+        metric:
+          metricSelector: proxmox.cluster.ha.quorate:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+          dqlQuery: >
+            timeseries ha_quorate = proxmox.cluster.ha.quorate, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { ha_quorate = sum(ha_quorate)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
+
+    - displayName: HA Quorate Nodes
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:  
+        metric:
+          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+          dqlQuery: >
+            timeseries ha_status = proxmox.cluster.ha.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { ha_status = sum(ha_status)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
+
+    - displayName: HA Status
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:  
+        metric:
+          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+          dqlQuery: >
+            timeseries ha_status = proxmox.cluster.ha.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { ha_status = sum(ha_status)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
+
+    - displayName: SDN Status
+      visualizationType: SINGLE_VALUE
+      singleValueConfig:  
+        metric:
+          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+          dqlQuery: >
+            timeseries sdn_status = proxmox.cluster.sdn.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
+              | summarize { sdb_status = sum(sdv_status)}, by:{`dt.entity.proxmox:cluster`}
+        showTrend: true
+        showSparkline: true
+
+  entitiesListCards:
+  - key: proxmox_cluster_list_self
+    displayName: Clusters
+    pageSize: 5
+    entitiesLimit: 500
+    displayCharts: false
+    numberOfVisibleCharts: 2
+    enableDetailsExpandability: false
+    displayIcons: true
+
+    charts:
+    - displayName: Nodes Online
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.cluster.node.online:last
+    
+    - displayName: Nodes Total
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.cluster.node:last
+
+    - displayName: Virtual Machines Total
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.vm
+
+    - displayName: Containers Total
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.lxc
+
+    columns:
+    - type: RELATION
+      relation:
+        entitySelectorTemplate: type(proxmox:node),fromRelationships.isChildOf($(entityConditions))
+        displayName: Nodes
+        displayAmount: true
+        fallbackMessage: No nodes
+
+  - key: proxmox_cluster_nodes
+    displayName: Nodes
+    pageSize: 5
+    entitiesLimit: 100
+    displayCharts: false
+    enableDetailsExpandability: false
+    numberOfVisibleCharts: 2
+    displayIcons: true
+    entitySelectorTemplate: type(proxmox:node),fromRelationships.runsOn($(entityConditions))
+
+    charts:
+    - displayName: Memory Used
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.memory.used:last
+    - displayName: CPU Usage
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.cpu.usage:last
 
 documents:
   dashboards:
