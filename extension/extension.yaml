@@ -1,5 +1,5 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.64
+version: 0.0.75
 minDynatraceVersion: 1.328.0
 minEECVersion: "1.309.0"
 author:
@@ -1467,7 +1467,7 @@ topology:
     rules:
     - idPattern: proxmox_vm_{cluster}_{node}_{vmid}
       instanceNamePattern: '{vmid}'
-      iconPattern: vm
+      iconPattern: container
       attributes:
       - key: cluster
         displayName: Cluster Name
@@ -1530,24 +1530,12 @@ topology:
         condition: $prefix(proxmox.lxc.)
 
   relationships:
-  - typeOfRelation: CHILD_OF
+  - typeOfRelation: RUNS_ON
     fromType: proxmox:node
     toType: proxmox:cluster
     sources:
     - sourceType: Metrics
       condition: $prefix(proxmox.node.)
-  - typeOfRelation: CHILD_OF
-    fromType: proxmox:vm
-    toType: proxmox:cluster
-    sources:
-    - sourceType: Metrics
-      condition: $prefix(proxmox.node.)
-  - typeOfRelation: CHILD_OF
-    fromType: proxmox:container
-    toType: proxmox:cluster
-    sources:
-    - sourceType: Metrics
-      condition: $prefix(proxmox.lxc.)
   - typeOfRelation: RUNS_ON
     fromType: proxmox:vm
     toType: proxmox:node
@@ -1599,9 +1587,9 @@ screens:
     layout:
       autoGenerate: false
       cards:
-      - key: proxmox_cluster_charts_overview
+      - key: proxmox_clusters_charts_overview
         type: CHART_GROUP
-      - key: proxmox_cluster_list_self
+      - key: proxmox_clusters_list_self
         type: ENTITIES_LIST
       - type: INJECTIONS    
   detailsSettings: 
@@ -1621,14 +1609,18 @@ screens:
     layout:
       autoGenerate: false
       cards:
-      - key: proxmox_cluster_charts_overview
+      - key: proxmox_clusters_charts_overview
         type: CHART_GROUP
       - key: proxmox_cluster_nodes
+        type: ENTITIES_LIST
+      - key: proxmox_cluster_node_vms
+        type: ENTITIES_LIST
+      - key: proxmox_cluster_node_containers
         type: ENTITIES_LIST
       - type: INJECTIONS
 
   chartsCards:
-  - key: proxmox_cluster_charts_overview
+  - key: proxmox_clusters_charts_overview
     target: BOTH
     mode: NORMAL
     numberOfVisibleCharts: 7
@@ -1713,7 +1705,7 @@ screens:
         showSparkline: true
 
   entitiesListCards:
-  - key: proxmox_cluster_list_self
+  - key: proxmox_clusters_list_self
     displayName: Clusters
     pageSize: 5
     entitiesLimit: 500
@@ -1750,7 +1742,7 @@ screens:
     columns:
     - type: RELATION
       relation:
-        entitySelectorTemplate: type(proxmox:node),fromRelationships.isChildOf($(entityConditions))
+        entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
         displayName: Nodes
         displayAmount: true
         fallbackMessage: No nodes
@@ -1763,7 +1755,7 @@ screens:
     enableDetailsExpandability: false
     numberOfVisibleCharts: 2
     displayIcons: true
-    entitySelectorTemplate: type(proxmox:node),fromRelationships.runsOn($(entityConditions))
+    entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
 
     charts:
     - displayName: Memory Used
@@ -1776,6 +1768,53 @@ screens:
       graphChartConfig:
         metrics:
         - metricSelector: proxmox.node.cpu.usage:last
+    - displayName: Storage Used
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: ( proxmox.node.storage.used:last / proxmox.node.storage.total:last ) * 100
+    - displayName: Load Average (1min)
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.loadavg."1min":last
+    - displayName: Load Average (5min)
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.loadavg."5min":last
+    - displayName: Load Average (15min)
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.loadavg."15min":last
+    - displayName: Uptime
+      visualizationType: GRAPH_CHART
+      graphChartConfig:
+        metrics:
+        - metricSelector: proxmox.node.uptime:last
+
+  - key: proxmox_cluster_node_vms
+    displayName: Virtual Machines
+    pageSize: 5
+    entitiesLimit: 100
+    displayCharts: false
+    enableDetailsExpandability: false
+    numberOfVisibleCharts: 2
+    displayIcons: true
+    entitySelectorTemplate:
+      type(proxmox:vm),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
+
+  - key: proxmox_cluster_node_containers
+    displayName: Virtual Machines
+    pageSize: 5
+    entitiesLimit: 100
+    displayCharts: false
+    enableDetailsExpandability: false
+    numberOfVisibleCharts: 2
+    displayIcons: true
+    entitySelectorTemplate:
+      type(proxmox:container),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
 
 documents:
   dashboards:
