@@ -431,6 +431,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     vm_uptime = vm_metrics.get("uptime")
                     vm_freemem = vm_metrics.get("freemem")
                     vm_maxdisk = vm_metrics.get("maxdisk")
+                    vm_diskused = vm_metrics.get("disk")
                     vm_balloon = vm_metrics.get("balloon")
                     vm_diskwrite = vm_metrics.get("diskwrite")
                     vm_netin = vm_metrics.get("netin")
@@ -473,6 +474,9 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     )
                     self.report_metric(
                         "proxmox.vm.disk.max", vm_maxdisk, vm_dimensions
+                    )
+                    self.report_metric(
+                        "proxmox.vm.disk.used", vm_diskused, vm_dimensions
                     )
                     self.report_metric(
                         "proxmox.vm.disk.read", vm_diskread, vm_dimensions

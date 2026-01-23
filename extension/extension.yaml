@@ -1,7 +1,7 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.0.75
-minDynatraceVersion: 1.328.0
-minEECVersion: "1.309.0"
+version: 0.1.0
+minDynatraceVersion: 1.313.0
+minEECVersion: "1.313.0"
 author:
   name: "Dynatrace"
 
@@ -21,1801 +21,2541 @@ python:
       path: activationSchema.json
 
   featureSets:
-  - featureSet: Cluster
-    metrics:
-    - key: proxmox.cluster.node
-    - key: proxmox.cluster.node.online
-    - key: proxmox.cluster.ha.quorate
-    - key: proxmox.cluster.ha.status
-    - key: proxmox.cluster.sdn.status
-  - featureSet: Node
-    metrics:
-    - key: proxmox.node.vm
-    - key: proxmox.node.lxc
-    - key: proxmox.node.online
-    - key: proxmox.node.cpu.usage
-    - key: proxmox.node.cpu.wait
-    - key: proxmox.node.cpu.idle
-    - key: proxmox.node.memory.free
-    - key: proxmox.node.memory.total
-    - key: proxmox.node.memory.used
-    - key: proxmox.node.uptime
-    - key: proxmox.node.loadavg.1min
-    - key: proxmox.node.loadavg.5min
-    - key: proxmox.node.loadavg.10min
-    - key: proxmox.node.rootfs.avail
-    - key: proxmox.node.rootfs.used
-    - key: proxmox.node.rootfs.free
-    - key: proxmox.node.rootfs.total
-    - key: proxmox.node.swap.free
-    - key: proxmox.node.swap.total
-    - key: proxmox.node.swap.used
-  - featureSet: Node-Storage
-    metrics:
-    - key: proxmox.node.storage.total
-    - key: proxmox.node.storage.used
-    - key: proxmox.node.storage.avail
-  - featureSet: Node-Services
-    metrics:
-    - key: proxmox.node.service.state
-    - key: proxmox.node.service.activestate
-    - key: proxmox.node.service.unitstate
-  - featureSet: VM
-    metrics:
-    - key: proxmox.vm.network.netin
-    - key: proxmox.vm.network.netout
-    - key: proxmox.vm.disk.write
-    - key: proxmox.vm.disk.max
-    - key: proxmox.vm.disk.read
-    - key: proxmox.vm.memory.max
-    - key: proxmox.vm.memory.mem
-    - key: proxmox.vm.cpu.usable
-    - key: proxmox.vm.cpu.usage
-    - key: proxmox.vm.uptime
-    - key: proxmox.vm.status
-    - key: proxmox.vm.memory.free
-    - key: proxmox.vm.balloon
-    - key: proxmox.vm.qmp.status
-  - featureSet: CONTAINER
-    metrics:
-    - key: proxmox.lxc.network.netout
-    - key: proxmox.lxc.uptime
-    - key: proxmox.lxc.swap.max
-    - key: proxmox.lxc.disk.write
-    - key: proxmox.lxc.network.netin
-    - key: proxmox.lxc.disk.read
-    - key: proxmox.lxc.memory.mem
-    - key: proxmox.lxc.cpu.usage
-    - key: proxmox.lxc.cpu.usable
-    - key: proxmox.lxc.memory.max
-    - key: proxmox.lxc.status
-    - key: proxmox.lxc.disk.usage
-    - key: proxmox.lxc.swap.usage
-    - key: proxmox.lxc.disk.max
+    - featureSet: Cluster
+      metrics:
+        - key: proxmox.cluster.node
+        - key: proxmox.cluster.node.online
+        - key: proxmox.cluster.ha.quorate
+        - key: proxmox.cluster.ha.status
+        - key: proxmox.cluster.sdn.status
+    - featureSet: Node
+      metrics:
+        - key: proxmox.node.vm
+        - key: proxmox.node.lxc
+        - key: proxmox.node.online
+        - key: proxmox.node.cpu.usage
+        - key: proxmox.node.cpu.wait
+        - key: proxmox.node.cpu.idle
+        - key: proxmox.node.memory.free
+        - key: proxmox.node.memory.total
+        - key: proxmox.node.memory.used
+        - key: proxmox.node.uptime
+        - key: proxmox.node.loadavg.1min
+        - key: proxmox.node.loadavg.5min
+        - key: proxmox.node.loadavg.10min
+        - key: proxmox.node.rootfs.avail
+        - key: proxmox.node.rootfs.used
+        - key: proxmox.node.rootfs.free
+        - key: proxmox.node.rootfs.total
+        - key: proxmox.node.swap.free
+        - key: proxmox.node.swap.total
+        - key: proxmox.node.swap.used
+    - featureSet: Node-Storage
+      metrics:
+        - key: proxmox.node.storage.total
+        - key: proxmox.node.storage.used
+        - key: proxmox.node.storage.avail
+    - featureSet: Node-Services
+      metrics:
+        - key: proxmox.node.service.state
+        - key: proxmox.node.service.activestate
+        - key: proxmox.node.service.unitstate
+    - featureSet: VM
+      metrics:
+        - key: proxmox.vm.network.netin
+        - key: proxmox.vm.network.netout
+        - key: proxmox.vm.disk.write
+        - key: proxmox.vm.disk.max
+        - key: proxmox.vm.disk.used
+        - key: proxmox.vm.disk.read
+        - key: proxmox.vm.memory.max
+        - key: proxmox.vm.memory.mem
+        - key: proxmox.vm.cpu.usable
+        - key: proxmox.vm.cpu.usage
+        - key: proxmox.vm.uptime
+        - key: proxmox.vm.status
+        - key: proxmox.vm.memory.free
+        - key: proxmox.vm.balloon
+        - key: proxmox.vm.qmp.status
+    - featureSet: CONTAINER
+      metrics:
+        - key: proxmox.lxc.network.netout
+        - key: proxmox.lxc.uptime
+        - key: proxmox.lxc.swap.max
+        - key: proxmox.lxc.disk.write
+        - key: proxmox.lxc.network.netin
+        - key: proxmox.lxc.disk.read
+        - key: proxmox.lxc.memory.mem
+        - key: proxmox.lxc.cpu.usage
+        - key: proxmox.lxc.cpu.usable
+        - key: proxmox.lxc.memory.max
+        - key: proxmox.lxc.status
+        - key: proxmox.lxc.disk.usage
+        - key: proxmox.lxc.swap.usage
+        - key: proxmox.lxc.disk.max
 
 metrics:
-- key: proxmox.cluster.node
-  metadata:
-    displayName: Node Count
-    description: Total Nodes running in the Cluster
-    sourceEntityType: proxmox:cluster
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.cluster
+  - key: proxmox.cluster.node
+    metadata:
+      displayName: Node Count
+      description: Total Nodes running in the Cluster
+      sourceEntityType: proxmox:cluster
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.cluster
 
-- key: proxmox.cluster.node.online
-  metadata:
-    displayName: Node Online Count
-    description: Total Nodes running and online in the Cluster
-    sourceEntityType: proxmox:cluster
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.cluster
+  - key: proxmox.cluster.node.online
+    metadata:
+      displayName: Node Online Count
+      description: Total Nodes running and online in the Cluster
+      sourceEntityType: proxmox:cluster
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.cluster
 
-- key: proxmox.cluster.ha.quorate
-  metadata:
-    displayName: HA Quorate
-    description: HA Quorate Status of the Cluster
-    sourceEntityType: proxmox:cluster
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.cluster
-    
-- key: proxmox.cluster.ha.status
-  metadata:
-    displayName: HA Status
-    description: HA Status of the Cluster
-    sourceEntityType: proxmox:cluster
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.cluster
+  - key: proxmox.cluster.ha.quorate
+    metadata:
+      displayName: HA Quorate
+      description: HA Quorate Status of the Cluster
+      sourceEntityType: proxmox:cluster
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.cluster
 
-- key: proxmox.cluster.sdn.status
-  metadata:
-    displayName: SDN Status
-    description: SDN Status of the Cluster
-    sourceEntityType: proxmox:cluster
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.cluster
+  - key: proxmox.cluster.ha.status
+    metadata:
+      displayName: HA Status
+      description: HA Status of the Cluster
+      sourceEntityType: proxmox:cluster
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.cluster
 
-- key: proxmox.node.vm
-  metadata:
-    displayName: VM Count
-    description: Total VMs running on the Proxmox Node
-    sourceEntityType: proxmox:node
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.cluster.sdn.status
+    metadata:
+      displayName: SDN Status
+      description: SDN Status of the Cluster
+      sourceEntityType: proxmox:cluster
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.cluster
 
-- key: proxmox.node.lxc
-  metadata:
-    displayName: Container Count
-    description: Total Containers running on the Proxmox Node
-    sourceEntityType: proxmox:node
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.vm
+    metadata:
+      displayName: VM Count
+      description: Total VMs running on the Proxmox Node
+      sourceEntityType: proxmox:node
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.online
-  metadata:
-    displayName: Online Status
-    description: Running State of the node
-    sourceEntityType: proxmox:node
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.lxc
+    metadata:
+      displayName: Container Count
+      description: Total Containers running on the Proxmox Node
+      sourceEntityType: proxmox:node
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.cpu.usage
-  metadata:
-    displayName: CPU Used
-    description: The current cpu usage
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.online
+    metadata:
+      displayName: Online Status
+      description: Running State of the node
+      sourceEntityType: proxmox:node
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.cpu.wait
-  metadata:
-    displayName: CPU Wait
-    description: The current cpu wait
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.cpu.usage
+    metadata:
+      displayName: CPU Used
+      description: The current cpu usage
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.cpu.idle
-  metadata:
-    displayName: CPU Idle
-    description: The current cpu idle
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.cpu.wait
+    metadata:
+      displayName: CPU Wait
+      description: The current cpu wait
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.memory.free
-  metadata:
-    displayName: Memory Free
-    description: The free memory in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.cpu.idle
+    metadata:
+      displayName: CPU Idle
+      description: The current cpu idle
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.memory.total
-  metadata:
-    displayName: Memory Total
-    description: The total memory in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.memory.free
+    metadata:
+      displayName: Memory Free
+      description: The free memory in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.memory.used
-  metadata:
-    displayName: Memory Used
-    description: The used memory in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.memory.total
+    metadata:
+      displayName: Memory Total
+      description: The total memory in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.uptime
-  metadata:
-    displayName: Node Uptime
-    description: Node uptime in seconds
-    sourceEntityType: proxmox:node
-    unit: Second
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.memory.used
+    metadata:
+      displayName: Memory Used
+      description: The used memory in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.loadavg.1min
-  metadata:
-    displayName: CPU Load (1m)
-    description: Average 1 minute CPU Load
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.uptime
+    metadata:
+      displayName: Node Uptime
+      description: Node uptime in seconds
+      sourceEntityType: proxmox:node
+      unit: Second
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.loadavg.5min
-  metadata:
-    displayName: CPU Load (5m)
-    description: Average 5 minute CPU Load
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.loadavg.1min
+    metadata:
+      displayName: CPU Load (1m)
+      description: Average 1 minute CPU Load
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.loadavg.15min
-  metadata:
-    displayName: CPU Load (15m)
-    description: Average 15 minute CPU Load
-    sourceEntityType: proxmox:node
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.loadavg.5min
+    metadata:
+      displayName: CPU Load (5m)
+      description: Average 5 minute CPU Load
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.rootfs.avail
-  metadata:
-    displayName: Root FS Available
-    description: The available bytes in the root filesystem
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.loadavg.15min
+    metadata:
+      displayName: CPU Load (15m)
+      description: Average 15 minute CPU Load
+      sourceEntityType: proxmox:node
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.rootfs.used
-  metadata:
-    displayName: Root FS Used
-    description: The used bytes in the root filesystem
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.rootfs.avail
+    metadata:
+      displayName: Root FS Available
+      description: The available bytes in the root filesystem
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.rootfs.free
-  metadata:
-    displayName: Root FS Free
-    description: The free bytes in the root filesystem
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.rootfs.used
+    metadata:
+      displayName: Root FS Used
+      description: The used bytes in the root filesystem
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.rootfs.total
-  metadata:
-    displayName: Root FS Total
-    description: The total bytes in the root filesystem
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.rootfs.free
+    metadata:
+      displayName: Root FS Free
+      description: The free bytes in the root filesystem
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.swap.free
-  metadata:
-    displayName: Swap Free
-    description: The free swap space
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.rootfs.total
+    metadata:
+      displayName: Root FS Total
+      description: The total bytes in the root filesystem
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.swap.total
-  metadata:
-    displayName: Swap Total
-    description: The total swap space
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.swap.free
+    metadata:
+      displayName: Swap Free
+      description: The free swap space
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.swap.used     
-  metadata:
-    displayName: Swap Used
-    description: The used swap space
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.swap.total
+    metadata:
+      displayName: Swap Total
+      description: The total swap space
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.storage.total
-  metadata:
-    displayName: Storage Total
-    description: Total storage space in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: storage
-      displayName: Storage Name
-    - key: nodestoragetype
-      displayName: Storage Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.swap.used
+    metadata:
+      displayName: Swap Used
+      description: The used swap space
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.storage.used
-  metadata:
-    displayName: Storage Used
-    description: Used storage space in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: storage
-      displayName: Storage Name
-    - key: nodestoragetype
-      displayName: Storage Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.storage.total
+    metadata:
+      displayName: Storage Total
+      description: Total storage space in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: storage
+          displayName: Storage Name
+        - key: nodestoragetype
+          displayName: Storage Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.storage.avail
-  metadata:
-    displayName: Storage Available
-    description: Available storage space in bytes
-    sourceEntityType: proxmox:node
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: nodestorage
-      displayName: Storage Name
-    - key: nodestoragetype
-      displayName: Storage Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.storage.used
+    metadata:
+      displayName: Storage Used
+      description: Used storage space in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: storage
+          displayName: Storage Name
+        - key: nodestoragetype
+          displayName: Storage Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.service.state
-  metadata:
-    displayName: Service State
-    description: Running State of the service
-    sourceEntityType: proxmox:node
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: service
-      displayName: Service ID
-    - key: service_name
-      displayName: Service Name
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.storage.avail
+    metadata:
+      displayName: Storage Available
+      description: Available storage space in bytes
+      sourceEntityType: proxmox:node
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: nodestorage
+          displayName: Storage Name
+        - key: nodestoragetype
+          displayName: Storage Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.service.activestate
-  metadata:
-    displayName: Service Active State
-    description: Active State of the service
-    sourceEntityType: proxmox:node
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: service
-      displayName: Service ID
-    - key: service_name
-      displayName: Service Name
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.service.state
+    metadata:
+      displayName: Service State
+      description: Running State of the service
+      sourceEntityType: proxmox:node
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: service
+          displayName: Service ID
+        - key: service_name
+          displayName: Service Name
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.node.service.unitstate
-  metadata:
-    displayName: Service Unit State
-    description: Unit State of the service
-    sourceEntityType: proxmox:node
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: service
-      displayName: Service ID
-    - key: service_name
-      displayName: Service Name
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.node
+  - key: proxmox.node.service.activestate
+    metadata:
+      displayName: Service Active State
+      description: Active State of the service
+      sourceEntityType: proxmox:node
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: service
+          displayName: Service ID
+        - key: service_name
+          displayName: Service Name
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.vm.memory.free
-  metadata:
-    displayName: Memory Free
-    description: Currently free memory in bytes
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.node.service.unitstate
+    metadata:
+      displayName: Service Unit State
+      description: Unit State of the service
+      sourceEntityType: proxmox:node
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: service
+          displayName: Service ID
+        - key: service_name
+          displayName: Service Name
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.node
 
-- key: proxmox.vm.balloon
-  metadata:
-    displayName: Balloon Memory
-    description: Currently Balloon memory in bytes
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.memory.free
+    metadata:
+      displayName: Memory Free
+      description: Currently free memory in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.qmp.status
-  metadata:
-    displayName: QMP Monitor Status
-    description: VM run state from the query-status QMP monitor command
-    sourceEntityType: proxmox:vm
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.balloon
+    metadata:
+      displayName: Balloon Memory
+      description: Currently Balloon memory in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.network.netin
-  metadata:
-    displayName: Network Ingress
-    description: The amount of traffic in bytes that was sent to the guest over the network since it was started
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.qmp.status
+    metadata:
+      displayName: QMP Monitor Status
+      description: VM run state from the query-status QMP monitor command
+      sourceEntityType: proxmox:vm
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.network.netout
-  metadata:
-    displayName: Network Egress
-    description: The amount of traffic in bytes that was sent from the guest over the network since it was started
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP    
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.network.netin
+    metadata:
+      displayName: Network Ingress
+      description: The amount of traffic in bytes that was sent to the guest over the network since it was started
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.disk.write
-  metadata:
-    displayName: Disk Write
-    description: The amount of bytes the guest wrote from it's block devices since the guest was started
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP   
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.network.netout
+    metadata:
+      displayName: Network Egress
+      description: The amount of traffic in bytes that was sent from the guest over the network since it was started
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.disk.max
-  metadata:
-    displayName: Disk Size
-    description: Root disk size in bytes
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.disk.write
+    metadata:
+      displayName: Disk Write
+      description: The amount of bytes the guest wrote from it's block devices since the guest was started
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.disk.read
-  metadata:
-    displayName: Disk Read
-    description: The amount of bytes the guest read from it's block devices since the guest was started
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.disk.max
+    metadata:
+      displayName: Disk Size
+      description: Root disk size in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.memory.max
-  metadata:
-    displayName: Memory Total
-    description: Maximum memory in bytes
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.disk.used
+    metadata:
+      displayName: Disk Used
+      description: Disk used space in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.memory.mem
-  metadata:
-    displayName: Memory Used
-    description: Currently used memory in bytes
-    sourceEntityType: proxmox:vm
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP 
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.disk.read
+    metadata:
+      displayName: Disk Read
+      description: The amount of bytes the guest read from it's block devices since the guest was started
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.cpu.usable
-  metadata:
-    displayName: CPU Usable
-    description: Maximum usable CPUs
-    sourceEntityType: proxmox:vm
-    unit: Count
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP  
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.memory.max
+    metadata:
+      displayName: Memory Total
+      description: Maximum memory in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.cpu.usage
-  metadata:
-    displayName: CPU Usage
-    description: Current CPU usage
-    sourceEntityType: proxmox:vm
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP    
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.memory.mem
+    metadata:
+      displayName: Memory Used
+      description: Currently used memory in bytes
+      sourceEntityType: proxmox:vm
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.uptime
-  metadata:
-    displayName: VM Uptime
-    description: Uptime in seconds
-    sourceEntityType: proxmox:vm
-    unit: Second
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP     
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.cpu.usable
+    metadata:
+      displayName: CPU Usable
+      description: Maximum usable CPUs
+      sourceEntityType: proxmox:vm
+      unit: Count
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.vm.status
-  metadata:
-    displayName: VM Status
-    description: Running Status of the VM
-    sourceEntityType: proxmox:vm
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: vmname
-      displayName: VM Name
-    - key: vmid
-      displayName: VM ID
-    - key: vmips
-      displayName: VM IP
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.vm
+  - key: proxmox.vm.cpu.usage
+    metadata:
+      displayName: CPU Usage
+      description: Current CPU usage
+      sourceEntityType: proxmox:vm
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.lxc.network.netout
-  metadata:
-    displayName: Network Egress
-    description: The amount of traffic in bytes that was sent from the guest over the network since it was started
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.vm.uptime
+    metadata:
+      displayName: VM Uptime
+      description: Uptime in seconds
+      sourceEntityType: proxmox:vm
+      unit: Second
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.lxc.uptime
-  metadata:
-    displayName: Container Uptime
-    description: Uptime in seconds
-    sourceEntityType: proxmox:container
-    unit: Second
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.vm.status
+    metadata:
+      displayName: VM Status
+      description: Running Status of the VM
+      sourceEntityType: proxmox:vm
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: vmname
+          displayName: VM Name
+        - key: vmid
+          displayName: VM ID
+        - key: vmips
+          displayName: VM IP
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.vm
 
-- key: proxmox.lxc.swap.max
-  metadata:
-    displayName: Swap Memory Total
-    description: Maximum swap memory in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.network.netout
+    metadata:
+      displayName: Network Egress
+      description: The amount of traffic in bytes that was sent from the guest over the network since it was started
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.disk.write
-  metadata:
-    displayName: Disk Write
-    description: The amount of bytes the guest wrote from it's block devices since the guest was started
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.uptime
+    metadata:
+      displayName: Container Uptime
+      description: Uptime in seconds
+      sourceEntityType: proxmox:container
+      unit: Second
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.network.netin
-  metadata:
-    displayName: Network Ingress
-    description: The amount of traffic in bytes that was sent to the guest over the network since it was started
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.swap.max
+    metadata:
+      displayName: Swap Memory Total
+      description: Maximum swap memory in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.disk.read
-  metadata:
-    displayName: Disk Read
-    description: The amount of bytes the guest read from it's block devices since the guest was started
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.disk.write
+    metadata:
+      displayName: Disk Write
+      description: The amount of bytes the guest wrote from it's block devices since the guest was started
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.memory.mem
-  metadata:
-    displayName: Memory Used
-    description: Currently used memory in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.network.netin
+    metadata:
+      displayName: Network Ingress
+      description: The amount of traffic in bytes that was sent to the guest over the network since it was started
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.cpu.usage
-  metadata:
-    displayName: CPU Used
-    description: The current cpu usage
-    sourceEntityType: proxmox:container
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.disk.read
+    metadata:
+      displayName: Disk Read
+      description: The amount of bytes the guest read from it's block devices since the guest was started
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.cpu.usable
-  metadata:
-    displayName: CPU Usable
-    description: Maximum usable CPUs
-    sourceEntityType: proxmox:container
-    unit: Percent
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.memory.mem
+    metadata:
+      displayName: Memory Used
+      description: Currently used memory in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.memory.max
-  metadata:
-    displayName: Memory Total
-    description: Maximum memory in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.cpu.usage
+    metadata:
+      displayName: CPU Used
+      description: The current cpu usage
+      sourceEntityType: proxmox:container
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.status
-  metadata:
-    displayName: VM Status
-    description: Running Status of the Container
-    sourceEntityType: proxmox:container
-    unit: State
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.cpu.usable
+    metadata:
+      displayName: CPU Usable
+      description: Maximum usable CPUs
+      sourceEntityType: proxmox:container
+      unit: Percent
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.disk.usage
-  metadata:
-    displayName: Disk Used
-    description: The amount of disk used space in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.memory.max
+    metadata:
+      displayName: Memory Total
+      description: Maximum memory in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.swap.usage
-  metadata:
-    displayName: Swap Used
-    description: The amount of swap memory used in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.status
+    metadata:
+      displayName: VM Status
+      description: Running Status of the Container
+      sourceEntityType: proxmox:container
+      unit: State
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
-- key: proxmox.lxc.disk.max
-  metadata:
-    displayName: Disk Size
-    description: Root disk size in bytes
-    sourceEntityType: proxmox:container
-    unit: Byte
-    dimensions:
-    - key: cluster
-      displayName: Cluster Name
-    - key: clusterid
-      displayName: Cluster ID
-    - key: node
-      displayName: Node Name
-    - key: nodeid
-      displayName: Node ID
-    - key: lxcname
-      displayName: Container Name
-    - key: lxcid
-      displayName: Container ID
-    - key: lxctype
-      displayName: Container Type
-    tags:
-    - com.dynatrace.proxmox
-    - proxmox.container
+  - key: proxmox.lxc.disk.usage
+    metadata:
+      displayName: Disk Used
+      description: The amount of disk used space in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
+
+  - key: proxmox.lxc.swap.usage
+    metadata:
+      displayName: Swap Used
+      description: The amount of swap memory used in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
+
+  - key: proxmox.lxc.disk.max
+    metadata:
+      displayName: Disk Size
+      description: Root disk size in bytes
+      sourceEntityType: proxmox:container
+      unit: Byte
+      dimensions:
+        - key: cluster
+          displayName: Cluster Name
+        - key: clusterid
+          displayName: Cluster ID
+        - key: node
+          displayName: Node Name
+        - key: nodeid
+          displayName: Node ID
+        - key: lxcname
+          displayName: Container Name
+        - key: lxcid
+          displayName: Container ID
+        - key: lxctype
+          displayName: Container Type
+      tags:
+        - com.dynatrace.proxmox
+        - proxmox.container
 
 topology:
   types:
-  - name: proxmox:cluster
-    displayName: Cluster
-    rules:
-    - idPattern: proxmox_cluster_{cluster}
-      instanceNamePattern: '{clusterid}'
-      iconPattern: cluster
-      attributes:
-      - key: cluster
-        displayName: Cluster Name
-        pattern: '{cluster}'
-      - key: clusterid
-        displayName: Cluster ID
-        pattern: '{clusterid}'
-      - key: dt.security_context
-        displayName: Security Context
-        pattern: '{dt.security_context}'
-      sources:
-      - sourceType: Metrics
-        condition: $prefix(proxmox.cluster.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.storage.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.service.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.vm.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.lxc.)
+    - name: proxmox:cluster
+      displayName: Cluster
+      rules:
+        - idPattern: proxmox_cluster_{cluster}
+          instanceNamePattern: "{clusterid}"
+          iconPattern: cluster
+          attributes:
+            - key: cluster
+              displayName: Cluster Name
+              pattern: "{cluster}"
+            - key: clusterid
+              displayName: Cluster ID
+              pattern: "{clusterid}"
+            - key: dt.security_context
+              displayName: Security Context
+              pattern: "{dt.security_context}"
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(proxmox.cluster.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.storage.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.service.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.vm.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.lxc.)
 
-  - name: proxmox:node
-    displayName: Node
-    rules:
-    - idPattern: proxmox_node_{cluster}_{node}
-      instanceNamePattern: '{nodeid}'
-      iconPattern: server
-      attributes:
-      - key: cluster
-        displayName: Cluster Name
-        pattern: '{cluster}'
-      - key: clusterid
-        displayName: Cluster ID
-        pattern: '{clusterid}'
-      - key: node
-        displayName: Node Name
-        pattern: '{node}'
-      - key: nodeip
-        displayName: Node IP
-        pattern: '{nodeip}'
-      - key: nodeid
-        displayName: Node ID
-        pattern: '{nodeid}'
-      - key: dt.security_context
-        displayName: Security Context
-        pattern: '{dt.security_context}'
-      - key: cpuinfo_cores
-        displayName: CPU Cores
-        pattern: '{cpuinfo_cores}'
-      - key: cpuinfo_sockets
-        displayName: CPU Sockets
-        pattern: '{cpuinfo_sockets}'
-      sources:
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.storage.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.node.service.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.vm.)
-      - sourceType: Metrics
-        condition: $prefix(proxmox.lxc.)
+    - name: proxmox:node
+      displayName: Node
+      rules:
+        - idPattern: proxmox_node_{cluster}_{node}
+          instanceNamePattern: "{nodeid}"
+          iconPattern: server
+          attributes:
+            - key: cluster
+              displayName: Cluster Name
+              pattern: "{cluster}"
+            - key: clusterid
+              displayName: Cluster ID
+              pattern: "{clusterid}"
+            - key: node
+              displayName: Node Name
+              pattern: "{node}"
+            - key: nodeip
+              displayName: Node IP
+              pattern: "{nodeip}"
+            - key: nodeid
+              displayName: Node ID
+              pattern: "{nodeid}"
+            - key: dt.security_context
+              displayName: Security Context
+              pattern: "{dt.security_context}"
+            - key: cpuinfo_cores
+              displayName: CPU Cores
+              pattern: "{cpuinfo_cores}"
+            - key: cpuinfo_sockets
+              displayName: CPU Sockets
+              pattern: "{cpuinfo_sockets}"
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.storage.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.node.service.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.vm.)
+            - sourceType: Metrics
+              condition: $prefix(proxmox.lxc.)
 
-  - name: proxmox:vm
-    displayName: Virtual Machine
-    rules:
-    - idPattern: proxmox_vm_{cluster}_{node}_{vmid}
-      instanceNamePattern: '{vmid}'
-      iconPattern: container
-      attributes:
-      - key: cluster
-        displayName: Cluster Name
-        pattern: '{cluster}'
-      - key: clusterid
-        displayName: Cluster ID
-        pattern: '{clusterid}'
-      - key: node
-        displayName: Node Name
-        pattern: '{node}'
-      - key: nodeip
-        displayName: Node IP
-        pattern: '{nodeip}'         
-      - key: vmid
-        displayName: VM ID
-        pattern: '{vmid}'
-      - key: vmname
-        displayName: VM Name
-        pattern: '{vmname}'
-      - key: vmips
-        displayName: VM IP
-        pattern: '{vmips}'
-      - key: dt.security_context
-        displayName: Security Context
-        pattern: '{dt.security_context}'
-      sources:
-      - sourceType: Metrics
-        condition: $prefix(proxmox.vm.)
+    - name: proxmox:vm
+      displayName: Virtual Machine
+      rules:
+        - idPattern: proxmox_vm_{cluster}_{node}_{vmid}
+          instanceNamePattern: "{vmid}"
+          iconPattern: container
+          attributes:
+            - key: cluster
+              displayName: Cluster Name
+              pattern: "{cluster}"
+            - key: clusterid
+              displayName: Cluster ID
+              pattern: "{clusterid}"
+            - key: node
+              displayName: Node Name
+              pattern: "{node}"
+            - key: nodeip
+              displayName: Node IP
+              pattern: "{nodeip}"
+            - key: vmid
+              displayName: VM ID
+              pattern: "{vmid}"
+            - key: vmname
+              displayName: VM Name
+              pattern: "{vmname}"
+            - key: vmips
+              displayName: VM IP
+              pattern: "{vmips}"
+            - key: dt.security_context
+              displayName: Security Context
+              pattern: "{dt.security_context}"
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(proxmox.vm.)
 
-  - name: proxmox:container
-    displayName: Container
-    rules:
-    - idPattern: proxmon_container_{cluster}_{node}_{lxcid}
-      instanceNamePattern: '{lxcid}'
-      iconPattern: container
-      attributes:
-      - key: cluster
-        displayName: Cluster Name
-        pattern: '{cluster}'
-      - key: clusterid
-        displayName: Cluster ID
-        pattern: '{clusterid}'
-      - key: node
-        displayName: Node Name
-        pattern: '{node}'
-      - key: nodeip
-        displayName: Node IP
-        pattern: '{nodeip}'
-      - key: vmid
-        displayName: VM ID
-        pattern: '{lxcid}'
-      - key: vmname
-        displayName: VM Name
-        pattern: '{lxcname}'
-      - key: dt.security_context
-        displayName: Security Context
-        pattern: '{dt.security_context}'
-      sources:
-      - sourceType: Metrics
-        condition: $prefix(proxmox.lxc.)
+    - name: proxmox:container
+      displayName: Container
+      rules:
+        - idPattern: proxmon_container_{cluster}_{node}_{lxcid}
+          instanceNamePattern: "{lxcid}"
+          iconPattern: container
+          attributes:
+            - key: cluster
+              displayName: Cluster Name
+              pattern: "{cluster}"
+            - key: clusterid
+              displayName: Cluster ID
+              pattern: "{clusterid}"
+            - key: node
+              displayName: Node Name
+              pattern: "{node}"
+            - key: nodeip
+              displayName: Node IP
+              pattern: "{nodeip}"
+            - key: vmid
+              displayName: VM ID
+              pattern: "{lxcid}"
+            - key: vmname
+              displayName: VM Name
+              pattern: "{lxcname}"
+            - key: dt.security_context
+              displayName: Security Context
+              pattern: "{dt.security_context}"
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(proxmox.lxc.)
 
   relationships:
-  - typeOfRelation: RUNS_ON
-    fromType: proxmox:node
-    toType: proxmox:cluster
-    sources:
-    - sourceType: Metrics
-      condition: $prefix(proxmox.node.)
-  - typeOfRelation: RUNS_ON
-    fromType: proxmox:vm
-    toType: proxmox:node
-    sources:
-    - sourceType: Metrics
-      condition: $prefix(proxmox.vm.)
-  - typeOfRelation: RUNS_ON
-    fromType: proxmox:container
-    toType: proxmox:node
-    sources:
-    - sourceType: Metrics
-      condition: $prefix(proxmox.lxc.)      
-  - typeOfRelation: SAME_AS
-    fromType: proxmox:node
-    toType: host
-    sources:
-    - sourceType: Entities
-      mappingRules:
-      - sourceProperty: nodeip
-        sourceTransformation: To lower case
-        destinationProperty: dt.ip_addresses
-        destinationTransformation: To lower case
-  - typeOfRelation: SAME_AS
-    fromType: proxmox:vm
-    toType: host
-    sources:
-    - sourceType: Entities
-      mappingRules:
-      - sourceProperty: vmips
-        sourceTransformation: To lower case
-        destinationProperty: dt.ip_addresses
-        destinationTransformation: To lower case
+    - typeOfRelation: RUNS_ON
+      fromType: proxmox:node
+      toType: proxmox:cluster
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(proxmox.node.)
+    - typeOfRelation: RUNS_ON
+      fromType: proxmox:vm
+      toType: proxmox:node
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(proxmox.vm.)
+    - typeOfRelation: RUNS_ON
+      fromType: proxmox:container
+      toType: proxmox:node
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(proxmox.lxc.)
+    - typeOfRelation: SAME_AS
+      fromType: proxmox:node
+      toType: host
+      sources:
+        - sourceType: Entities
+          mappingRules:
+            - sourceProperty: nodeip
+              sourceTransformation: To lower case
+              destinationProperty: dt.ip_addresses
+              destinationTransformation: To lower case
+    - typeOfRelation: SAME_AS
+      fromType: proxmox:vm
+      toType: host
+      sources:
+        - sourceType: Entities
+          mappingRules:
+            - sourceProperty: vmips
+              sourceTransformation: To lower case
+              destinationProperty: dt.ip_addresses
+              destinationTransformation: To lower case
 
 screens:
-- entityType: proxmox:cluster
-  listSettings:
-    staticContent:
-      showGlobalFilter: false
-      header:
-        title: Proxmox Clusters
-        description: List of Proxmox Clusters
-        icon: cluster
-      breadcrumbs:
-        - type: NOOP
-          displayName: Proxmox
-        - type: ENTITY_LIST_REF
-          displayName: Clusters
-          entityType: proxmox:cluster
-    layout:
-      autoGenerate: false
-      cards:
+  - entityType: proxmox:cluster
+    listSettings:
+      staticContent:
+        showGlobalFilter: false
+        header:
+          title: Proxmox Clusters
+          description: List of Proxmox Clusters
+          icon: cluster
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_clusters_charts_overview
+            type: CHART_GROUP
+          - key: proxmox_clusters_list_self
+            type: ENTITIES_LIST
+          - type: INJECTIONS
+    detailsSettings:
+      target: BOTH
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: false
+        showAddTag: true
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_clusters_charts_overview
+            type: CHART_GROUP
+          - key: proxmox_cluster_nodes
+            type: ENTITIES_LIST
+          - key: proxmox_cluster_nodes_dql
+            type: DQL_TABLE
+          - key: proxmox_cluster_node_vms
+            type: ENTITIES_LIST
+          - key: proxmox_cluster_node_containers
+            type: ENTITIES_LIST
+          - type: INJECTIONS
+
+    chartsCards:
       - key: proxmox_clusters_charts_overview
-        type: CHART_GROUP
+        target: BOTH
+        mode: NORMAL
+        numberOfVisibleCharts: 7
+        displayName: Cluster Overview
+        description: Overview of Proxmox Clusters
+        charts:
+          - displayName: Nodes
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.node.online:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries nodes = count(proxmox.node.online, scalar: true), by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                    | summarize { nodes = sum(nodes)}, by: { timestamp=now() }
+              showSparkline: true
+              showTrend: true
+
+          - displayName: Virtual Machines
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.node.vm:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { count(proxmox.node.vm), vms = max(proxmox.node.vm, scalar: true) }, by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` },  filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                    | summarize vms = sum(vms), by: { timestamp=now() }
+              showTrend: true
+              showSparkline: true
+
+          - displayName: Containers
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.node.lxc:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { count(proxmox.node.lxc), containers = max(proxmox.node.lxc, scalar: true) }, by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` },  filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                    | summarize containers = sum(containers), by: { timestamp=now() }
+              showTrend: true
+              showSparkline: true
+
+          - displayName: HA Quorate Nodes
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.cluster.ha.quorate:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+                dqlQuery: >
+                  timeseries ha_quorate =  min(proxmox.cluster.ha.quorate), by: { `dt.entity.proxmox:cluster` },  filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                    | fieldsAdd ha_quorate = arrayLast(ha_quorate)
+                    | fields ha_quorate
+                    | summarize ha_quorate = takeLast(ha_quorate), by:{timestamp=now()}
+              showTrend: true
+              showSparkline: true
+
+          - displayName: HA Status
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+                dqlQuery: >
+                  timeseries ha_status = min(proxmox.cluster.ha.status), by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                  | fieldsAdd ha_status = arrayLast(ha_status)
+                  | fields ha_status
+                  | summarize ha_quorate = takeLast(ha_status), by:{timestamp=now()}
+              showTrend: true
+              showSparkline: true
+
+          - displayName: SDN Status
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
+                dqlQuery: >
+                  timeseries sdn_status = min(proxmox.cluster.sdn.status), by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}, interval:5m
+                  | fieldsAdd sdn_status = arrayLast(sdn_status)
+                  | fields sdn_status
+                  | summarize sdn_status = takeLast(sdn_status), by:{timestamp=now()}
+              showTrend: true
+              showSparkline: true
+
+    entitiesListCards:
       - key: proxmox_clusters_list_self
-        type: ENTITIES_LIST
-      - type: INJECTIONS    
-  detailsSettings: 
-    target: BOTH
-    staticContent:
-      showProblems: true
-      showProperties: true
-      showTags: true
-      showGlobalFilter: false
-      showAddTag: true
-      breadcrumbs:
-        - type: NOOP
-          displayName: Proxmox
-        - type: ENTITY_LIST_REF
-          displayName: Clusters
-          entityType: proxmox:cluster
-    layout:
-      autoGenerate: false
-      cards:
-      - key: proxmox_clusters_charts_overview
-        type: CHART_GROUP
+        displayName: Clusters
+        pageSize: 5
+        entitiesLimit: 500
+        displayCharts: false
+        numberOfVisibleCharts: 2
+        enableDetailsExpandability: false
+        displayIcons: true
+
+        charts:
+          - displayName: Nodes Online
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.cluster.node.online:last
+
+          - displayName: Nodes Total
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.cluster.node:last
+
+          - displayName: Virtual Machines Total
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.vm
+
+          - displayName: Containers Total
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.lxc
+
+        columns:
+          - type: RELATION
+            relation:
+              entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
+              displayName: Nodes
+              displayAmount: true
+              fallbackMessage: No nodes
+
       - key: proxmox_cluster_nodes
-        type: ENTITIES_LIST
-      - key: proxmox_cluster_node_vms
-        type: ENTITIES_LIST
-      - key: proxmox_cluster_node_containers
-        type: ENTITIES_LIST
-      - type: INJECTIONS
-
-  chartsCards:
-  - key: proxmox_clusters_charts_overview
-    target: BOTH
-    mode: NORMAL
-    numberOfVisibleCharts: 7
-    displayName: Cluster Overview
-    description: Overview of Proxmox Clusters
-    charts:
-    - displayName: Nodes
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.node.online:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
-          dqlQuery: >
-            timeseries nodes = count(proxmox.node.online, scalar: true), by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $entityId}
-            | summarize { nodes = sum(nodes)}, by:{ `dt.entity.proxmox:cluster` }
-        showSparkline: true
-        showTrend: true
-
-    - displayName: Virtual Machines
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.node.vm:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
-          dqlQuery: >
-            timeseries vms = max(proxmox.node.vm, scalar:true), by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { vms = sum(vms)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-    - displayName: Containers
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:
-        metric:
-          metricSelector: proxmox.node.lxc:splitBy("dt.entity.proxmox:cluster"):sum:sort(value(max,descending)):last
-          dqlQuery: >
-            timeseries vms = max(proxmox.node.lxc, scalar:true), by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { vms = sum(vms)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-    - displayName: HA Quorate Nodes
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:  
-        metric:
-          metricSelector: proxmox.cluster.ha.quorate:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
-          dqlQuery: >
-            timeseries ha_quorate = proxmox.cluster.ha.quorate, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { ha_quorate = sum(ha_quorate)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-    - displayName: HA Quorate Nodes
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:  
-        metric:
-          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
-          dqlQuery: >
-            timeseries ha_status = proxmox.cluster.ha.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { ha_status = sum(ha_status)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-    - displayName: HA Status
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:  
-        metric:
-          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
-          dqlQuery: >
-            timeseries ha_status = proxmox.cluster.ha.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { ha_status = sum(ha_status)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-    - displayName: SDN Status
-      visualizationType: SINGLE_VALUE
-      singleValueConfig:  
-        metric:
-          metricSelector: proxmox.cluster.ha.status:splitBy("dt.entity.proxmox:cluster"):sort(value(auto,descending)):last
-          dqlQuery: >
-            timeseries sdn_status = proxmox.cluster.sdn.status, by: { `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:cluster` == $(entityId)}
-              | summarize { sdb_status = sum(sdv_status)}, by:{`dt.entity.proxmox:cluster`}
-        showTrend: true
-        showSparkline: true
-
-  entitiesListCards:
-  - key: proxmox_clusters_list_self
-    displayName: Clusters
-    pageSize: 5
-    entitiesLimit: 500
-    displayCharts: false
-    numberOfVisibleCharts: 2
-    enableDetailsExpandability: false
-    displayIcons: true
-
-    charts:
-    - displayName: Nodes Online
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.cluster.node.online:last
-    
-    - displayName: Nodes Total
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.cluster.node:last
-
-    - displayName: Virtual Machines Total
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.vm
-
-    - displayName: Containers Total
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.lxc
-
-    columns:
-    - type: RELATION
-      relation:
-        entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
         displayName: Nodes
-        displayAmount: true
-        fallbackMessage: No nodes
+        pageSize: 5
+        entitiesLimit: 100
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
 
-  - key: proxmox_cluster_nodes
-    displayName: Nodes
-    pageSize: 5
-    entitiesLimit: 100
-    displayCharts: false
-    enableDetailsExpandability: false
-    numberOfVisibleCharts: 2
-    displayIcons: true
-    entitySelectorTemplate: type(proxmox:node),fromRelationships.runson($(entityConditions))
+        charts:
+          - displayName: Memory Used
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.memory.used:last
+          - displayName: CPU Usage
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.cpu.usage:last
+          - displayName: Storage Used
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ( proxmox.node.storage.used:last / proxmox.node.storage.total:last ) * 100
+          - displayName: Load Average (1min)
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.loadavg."1min":last
+          - displayName: Load Average (5min)
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.loadavg."5min":last
+          - displayName: Load Average (15min)
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.loadavg."15min":last
+          - displayName: Uptime
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: proxmox.node.uptime:last
 
-    charts:
-    - displayName: Memory Used
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.memory.used:last
-    - displayName: CPU Usage
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.cpu.usage:last
-    - displayName: Storage Used
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: ( proxmox.node.storage.used:last / proxmox.node.storage.total:last ) * 100
-    - displayName: Load Average (1min)
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.loadavg."1min":last
-    - displayName: Load Average (5min)
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.loadavg."5min":last
-    - displayName: Load Average (15min)
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.loadavg."15min":last
-    - displayName: Uptime
-      visualizationType: GRAPH_CHART
-      graphChartConfig:
-        metrics:
-        - metricSelector: proxmox.node.uptime:last
+      - key: proxmox_cluster_node_vms
+        displayName: Virtual Machines
+        pageSize: 5
+        entitiesLimit: 100
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        entitySelectorTemplate: type(proxmox:vm),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
 
-  - key: proxmox_cluster_node_vms
-    displayName: Virtual Machines
-    pageSize: 5
-    entitiesLimit: 100
-    displayCharts: false
-    enableDetailsExpandability: false
-    numberOfVisibleCharts: 2
-    displayIcons: true
-    entitySelectorTemplate:
-      type(proxmox:vm),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
+      - key: proxmox_cluster_node_containers
+        displayName: Virtual Machines
+        pageSize: 5
+        entitiesLimit: 100
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        entitySelectorTemplate: type(proxmox:container),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
 
-  - key: proxmox_cluster_node_containers
-    displayName: Virtual Machines
-    pageSize: 5
-    entitiesLimit: 100
-    displayCharts: false
-    enableDetailsExpandability: false
-    numberOfVisibleCharts: 2
-    displayIcons: true
-    entitySelectorTemplate:
-      type(proxmox:container),fromRelationships.runsOn(type(proxmox:node),fromRelationships.runsOn($(entityConditions)))
+    dqlTableCards:
+      - key: proxmox_cluster_nodes_dql
+        displayName: Nodes
+        query:
+          query: >
+            fetch `dt.entity.proxmox:node`
+            | fieldsFlatten runs_on
+            | fieldsAdd node.id = id, node = record(entityId=id, displayName=entity.name, dim="dt.entity.proxmox:node")
+            | filter `runs_on.dt.entity.proxmox:cluster` == $(entityId)
+          lookups:
+            - query: >
+                fetch `dt.entity.proxmox:node`
+                | fieldsAdd nodeip, id
+              sourceField: node.id
+              lookupField: id
+              fields:
+                - nodeip
+            - query: >
+                timeseries {mem_used = avg(proxmox.node.memory.used), mem_limit = avg(proxmox.node.memory.total), by: {`dt.entity.proxmox:node`}}
+                  | fieldsAdd mem_used_percent = arrayLast(mem_used) / arrayLast(mem_limit) * 100 | fieldsRemove mem_used, mem_limit
+              sourceField: node.id
+              lookupField: "`dt.entity.proxmox:node`"
+              fields:
+                - mem_used_percent
+            - query: >
+                timeseries {cpu_usage = avg(proxmox.node.cpu.usage)}, by: {`dt.entity.proxmox:node`}
+                  | fieldsAdd cpu_usage = arrayLast(cpu_usage)
+              sourceField: node.id
+              lookupField: "`dt.entity.proxmox:node`"
+              fields:
+                - cpu_usage
+            - query: >
+                timeseries { storage_used = avg(proxmox.node.storage.used), storage_limit = avg(proxmox.node.storage.total) }, by: {  `dt.entity.proxmox:node` }
+                  | fieldsAdd storage_used_percent = arrayLast(storage_used) / arrayLast(storage_limit) * 100
+                  | fieldsRemove storage_used, storage_limit
+              sourceField: node.id
+              lookupField: "`dt.entity.proxmox:node`"
+              fields:
+                - storage_used_percent
+            - query: >
+                timeseries vms_count = avg(proxmox.node.vm), by:{`dt.entity.proxmox:node`}
+                | fieldsAdd vms_count=arrayLast(vms_count)
+              sourceField: node.id
+              lookupField: "`dt.entity.proxmox:node`"
+              fields:
+                - vms_count
+            - query: >
+                timeseries lxc_count = avg(proxmox.node.lxc), by:{`dt.entity.proxmox:node`}
+                | fieldsAdd lxc_count=arrayLast(lxc_count)
+              sourceField: node.id
+              lookupField: "`dt.entity.proxmox:node`"
+              fields:
+                - lxc_count
+        columns:
+          - field: node
+            displayName: Node Name
+            columnType: TEXT
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+          - field: nodeip
+            displayName: IP Addresses
+            columnType: TEXT
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+          - field: mem_used_percent
+            displayName: Memory used [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: cpu_usage
+            displayName: CPU Usage [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: storage_used_percent
+            displayName: Storage Used [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: vms_count
+            displayName: VMs Count
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.number|abbreviate=true|maximumFractionDigits=0
+          - field: lxc_count
+            displayName: Container Count
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.number|abbreviate=true|maximumFractionDigits=0
 
+  - entityType: proxmox:node
+    listSettings:
+      staticContent:
+        showGlobalFilter: false
+        header:
+          title: Proxmox Nodes
+          description: List of Proxmox Nodes
+          icon: server
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_node_list_self
+            type: ENTITIES_LIST
+          - type: INJECTIONS
+    detailsSettings:
+      target: BOTH #  TODO - layout will be applied to both gens. You may want to duplicate the details settings and provide separeate objects for 2nd and 3rd gen
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: false
+        showAddTag: true
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_REF
+            entitySelectorTemplate: type(proxmox:cluster),toRelationships.runsOn($(entityConditions))
+          - type: PLATFORM_ENTITY
+            dqlField: cluster.relation_record
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+        breadcrumbsDqlQuery:
+          query: >
+            fetch `dt.entity.proxmox:node`
+            | filter id == $(entityId)
+            | fields id, cluster.id = runs_on[`dt.entity.proxmox:cluster`]
+          lookups:
+            - query: >
+                fetch `dt.entity.proxmox:cluster`
+                | fields id, cluster.relation_record = record(entityId = id, displayName = entity.name)
+              sourceField: cluster.id
+              lookupField: id
+              fields:
+                - cluster.relation_record
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_node_charts_overview
+            type: CHART_GROUP
+          - key: proxmox_node_vms_dql
+            type: DQL_TABLE
+          - key: proxmox_node_containers_dql
+            type: DQL_TABLE
+          - type: INJECTIONS
+
+    chartsCards:
+      - key: proxmox_node_charts_overview
+        target: BOTH
+        mode: NORMAL
+        numberOfVisibleCharts: 8
+        displayName: Node Overview
+        description: Overview of the Proxmox Node
+        charts:
+          - displayName: Memory Used %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ((proxmox.node.memory.used)/(proxmox.node.memory.total) * 100):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { mem_used = avg(proxmox.node.memory.used), mem_limit = avg(proxmox.node.memory.total) }, by: {  `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:node` == $(entityId)}
+                      | fieldsAdd expression = mem_used[] / mem_limit[] * 100
+                      | fieldsRemove mem_used, mem_limit
+                  visualization:
+                    themeColor: BLUE                      
+
+          - displayName: CPU Usage %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: (proxmox.node.cpu.usage):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { cpu_usage = avg(proxmox.node.cpu.usage) }, by: {  `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:node` == $(entityId)}
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: Root Filesystem Usage %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ((proxmox.node.rootfs.used)/(proxmox.node.rootfs.total) * 100):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { rootfs_used = avg(proxmox.node.rootfs.used), rootfs_limit = avg(proxmox.node.rootfs.total) }, by: {  `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:node` == $(entityId)}
+                    | fieldsAdd expression = rootfs_used[] / rootfs_limit[] * 100
+                    | fieldsRemove rootfs_used, rootfs_limit
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: Storage Total Usage %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ((proxmox.node.storage.used)/(proxmox.node.storage.total) * 100):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { storage_used = avg(proxmox.node.storage.used), storage_limit = avg(proxmox.node.storage.total) }, by: {  `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:node` == $(entityId)}
+                    | fieldsAdd expression = storage_used[] / storage_limit[] * 100
+                    | fieldsAdd expression = array(arrayLast(expression)), { expression.trend_line = expression }
+                    | fieldsRemove storage_used, storage_limit
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: Virtual Machines
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.node.vm:splitBy("dt.entity.proxmox:node"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { count(proxmox.node.vm), vms = max(proxmox.node.vm, scalar: true) }, by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` },  filter:{`dt.entity.proxmox:node` == $(entityId)}, interval:5m
+                    | summarize vms = sum(vms), by: { timestamp=now() }
+              showTrend: true
+              showSparkline: true
+
+          - displayName: Containers
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.node.lxc:splitBy("dt.entity.proxmox:node"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { count(proxmox.node.lxc), containers = max(proxmox.node.lxc, scalar: true) }, by: { `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` },  filter:{`dt.entity.proxmox:node` == $(entityId)}, interval:5m
+                    | summarize containers = sum(containers), by: { timestamp=now() }
+              showTrend: true
+              showSparkline: true
+
+    entitiesListCards:
+      - key: proxmox_node_list_self
+        displayName: Nodes
+        pageSize: 10
+        entitiesLimit: 500
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        columns:
+          - type: RELATION
+            relation:
+              displayName: Cluster
+              entitySelectorTemplate: type(proxmox:cluster),toRelationships.runsOn($(entityConditions))
+          - type: RELATION
+            relation:
+              entitySelectorTemplate: type(proxmox:vm),fromRelationships.runsOn($(entityConditions))
+              displayName: Virtual Machines
+              displayAmount: true
+              fallbackMessage: No virtual machines found
+          - type: RELATION
+            relation:
+              entitySelectorTemplate: type(proxmox:container),fromRelationships.runsOn($(entityConditions))
+              displayName: Containers
+              displayAmount: true
+              fallbackMessage: No containers found
+
+    dqlTableCards:
+      - key: proxmox_node_vms_dql
+        displayName: Virtual Machines
+        query:
+          query: >
+            fetch `dt.entity.proxmox:vm`
+            | fieldsFlatten runs_on
+            | fieldsAdd vm.id = id, vm = record(entityId=id, displayName=entity.name, dim="dt.entity.proxmox:vm")
+            | filter `runs_on.dt.entity.proxmox:node` == $(entityId)
+          lookups:
+            - query: >
+                fetch `dt.entity.proxmox:vm`
+                | fieldsAdd vmips, id
+              sourceField: vm.id
+              lookupField: id
+              fields:
+                - vmips
+            - query: >
+                timeseries {mem_used = avg(proxmox.vm.memory.mem), mem_limit = avg(proxmox.vm.memory.max), by: {`dt.entity.proxmox:vm`}}
+                  | fieldsAdd mem_used_percent = arrayLast(mem_used) / arrayLast(mem_limit) * 100 | fieldsRemove mem_used, mem_limit
+              sourceField: vm.id
+              lookupField: "`dt.entity.proxmox:vm`"
+              fields:
+                - mem_used_percent
+            - query: >
+                timeseries {cpu_usage = avg(proxmox.vm.cpu.usage)}, by: {`dt.entity.proxmox:vm`}
+                  | fieldsAdd cpu_usage = arrayLast(cpu_usage)
+              sourceField: vm.id
+              lookupField: "`dt.entity.proxmox:vm`"
+              fields:
+                - cpu_usage
+            - query: >
+                timeseries { storage_size = avg(proxmox.vm.disk.max) }, by: {  `dt.entity.proxmox:vm` }
+                  | fieldsAdd storage_size = arrayLast(storage_size)
+              sourceField: vm.id
+              lookupField: "`dt.entity.proxmox:vm`"
+              fields:
+                - storage_size
+            - query: >
+                timeseries vms_uptime= avg(proxmox.vm.uptime), by:{`dt.entity.proxmox:vm`}
+                | fieldsAdd vms_uptime=arrayLast(vms_uptime)
+              sourceField: vm.id
+              lookupField: "`dt.entity.proxmox:vm`"
+              fields:
+                - vms_uptime
+        columns:
+          - field: vm
+            displayName: VM Name
+            columnType: TEXT
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+          - field: vmips
+            displayName: IP Addresses
+            columnType: TEXT
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+          - field: mem_used_percent
+            displayName: Memory used [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: cpu_usage
+            displayName: CPU Usage [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: storage_size
+            displayName: Storage Size [bytes]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.bytes|abbreviate=true|maximumFractionDigits=2
+          - field: vms_uptime
+            displayName: VMs Uptime [s]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.number|abbreviate=true|maximumFractionDigits=0
+
+      - key: proxmox_node_containers_dql
+        displayName: Containers
+        query:
+          query: >
+            fetch `dt.entity.proxmox:container`
+            | fieldsFlatten runs_on
+            | fieldsAdd lxc.id = id, vm = record(entityId=id, displayName=entity.name, dim="dt.entity.proxmox:container")
+            | filter `runs_on.dt.entity.proxmox:node` == $(entityId)
+          lookups:
+            - query: >
+                timeseries {mem_used = avg(proxmox.lxc.memory.mem), mem_limit = avg(proxmox.lxc.memory.max), by: {`dt.entity.proxmox:container`}}
+                  | fieldsAdd mem_used_percent = arrayLast(mem_used) / arrayLast(mem_limit) * 100 | fieldsRemove mem_used, mem_limit
+              sourceField: lxc.id
+              lookupField: "`dt.entity.proxmox:container`"
+              fields:
+                - mem_used_percent
+            - query: >
+                timeseries {cpu_usage = avg(proxmox.lxc.cpu.usage)}, by: {`dt.entity.proxmox:container`}
+                  | fieldsAdd cpu_usage = arrayLast(cpu_usage)
+              sourceField: lxc.id
+              lookupField: "`dt.entity.proxmox:container`"
+              fields:
+                - cpu_usage
+            - query: >
+                timeseries { storage_size = avg(proxmox.lxc.disk.max), storage_used = avg(proxmox.lxc.disk.usage) }, by: {  `dt.entity.proxmox:container` }
+                  | fieldsAdd storage_used_percent = arrayLast(storage_used) / arrayLast(storage_size) * 100 | fieldsRemove storage_size, storage_used
+              sourceField: lxc.id
+              lookupField: "`dt.entity.proxmox:container`"
+              fields:
+                - storage_used_percent
+            - query: >
+                timeseries lxc_uptime= avg(proxmox.lxc.uptime), by:{`dt.entity.proxmox:container`}
+                | fieldsAdd lxc_uptime=arrayLast(lxc_uptime)
+              sourceField: lxc.id
+              lookupField: "`dt.entity.proxmox:container`"
+              fields:
+                - lxc_uptime
+        columns:
+          - field: vm
+            displayName: VM Name
+            columnType: TEXT
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+          - field: mem_used_percent
+            displayName: Memory used [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: cpu_usage
+            displayName: CPU Usage [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: storage_used_percent
+            displayName: Storage Used [%]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.percent|abbreviate=true|maximumFractionDigits=2
+          - field: lxc_uptime
+            displayName: Container Uptime [s]
+            columnType: NUMBER
+            widthType: AUTO
+            defaultColumn: false
+            resizable: true
+            sortable: true
+            formatter: unitRenderer|unit=units.data.number|abbreviate=true|maximumFractionDigits=0
+
+  - entityType: proxmox:container
+    listSettings:
+      staticContent:
+        showGlobalFilter: false
+        header:
+          title: Proxmox Containers
+          description: List of Proxmox Containers
+          icon: container
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+          - type: ENTITY_LIST_REF
+            displayName: Containers
+            entityType: proxmox:container
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_container_list_self
+            type: ENTITIES_LIST
+          - type: INJECTIONS
+    detailsSettings:
+      target: BOTH #  TODO - layout will be applied to both gens. You may want to duplicate the details settings and provide separeate objects for 2nd and 3rd gen
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: false
+        showAddTag: true
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_REF
+            entitySelectorTemplate: type(proxmox:node),toRelationships.runsOn($(entityConditions))
+          - type: PLATFORM_ENTITY
+            dqlField: node.relation_record
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+        breadcrumbsDqlQuery:
+          query: >
+            fetch `dt.entity.proxmox:container`
+            | filter id == $(entityId)
+            | fields id, node.id = runs_on[`dt.entity.proxmox:node`]
+          lookups:
+            - query: >
+                fetch `dt.entity.proxmox:node`
+                | fields id, node.relation_record = record(entityId = id, displayName = entity.name)
+              sourceField: node.id
+              lookupField: id
+              fields:
+                - node.relation_record
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_container_charts_overview
+            type: CHART_GROUP
+          - type: INJECTIONS
+
+    chartsCards:
+      - key: proxmox_container_charts_overview
+        target: BOTH
+        mode: NORMAL
+        numberOfVisibleCharts: 8
+        displayName: Container Overview
+        description: Overview of the Proxmox Container
+        charts:
+          - displayName: Memory Used %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ((proxmox.lxc.memory.mem)/(proxmox.lxc.memory.max) * 100):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { mem_used = avg(proxmox.lxc.memory.mem), mem_limit = avg(proxmox.lxc.memory.max) }, by: {  `dt.entity.proxmox:container`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:container` == $(entityId)}
+                      | fieldsAdd expression = mem_used[] / mem_limit[] * 100
+                      | fieldsRemove mem_used, mem_limit
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: CPU Usage %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: (proxmox.lxc.cpu.usage):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { cpu_usage = avg(proxmox.lxc.cpu.usage) }, by: {  `dt.entity.proxmox:container`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:container` == $(entityId)}
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: Disk Availability %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: (proxmox.lxc.disk.usage):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { disk_used = avg( proxmox.lxc.disk.usage ), disk_limit = avg(proxmox.lxc.disk.max ) }, by: {  `dt.entity.proxmox:container`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:container` == $(entityId)}
+                      | fieldsAdd disk_avail_percent = disk_used[] / disk_limit[]  * 100
+                      | fieldsRemove disk_used, disk_limit 
+                  overrideUnit: units.data.percent
+                  visualization:
+                    themeColor: BLUE
+          - displayName: Uptime
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.lxc.uptime:splitBy("dt.entity.proxmox:container"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { uptime_avg = avg(proxmox.lxc.uptime) }, by: {  `dt.entity.proxmox:container`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:container` == $(entityId)}
+                    | fieldsAdd uptime = arrayLast(uptime_avg)
+                overrideUnit: units.data.hours
+
+    entitiesListCards:
+      - key: proxmox_container_list_self
+        displayName: Containers
+        pageSize: 10
+        entitiesLimit: 500
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        columns:
+          - type: RELATION
+            relation:
+              displayName: Container
+              entitySelectorTemplate: type(proxmox:container),toRelationships.runsOn($(entityConditions))
+
+  - entityType: proxmox:vm
+    listSettings:
+      staticContent:
+        showGlobalFilter: false
+        header:
+          title: Proxmox VMs
+          description: List of Proxmox VMs
+          icon: container
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+          - type: ENTITY_LIST_REF
+            displayName: VMs
+            entityType: proxmox:vm
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_vm_list_self
+            type: ENTITIES_LIST
+          - type: INJECTIONS
+    detailsSettings:
+      target: BOTH #  TODO - layout will be applied to both gens. You may want to duplicate the details settings and provide separeate objects for 2nd and 3rd gen
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: false
+        showAddTag: true
+        breadcrumbs:
+          - type: NOOP
+            displayName: Proxmox
+          - type: ENTITY_LIST_REF
+            displayName: Clusters
+            entityType: proxmox:cluster
+          - type: ENTITY_REF
+            entitySelectorTemplate: type(proxmox:node),toRelationships.runsOn($(entityConditions))
+          - type: PLATFORM_ENTITY
+            dqlField: node.relation_record
+          - type: ENTITY_LIST_REF
+            displayName: Nodes
+            entityType: proxmox:node
+        breadcrumbsDqlQuery:
+          query: >
+            fetch `dt.entity.proxmox:vm`
+            | filter id == $(entityId)
+            | fields id, node.id = runs_on[`dt.entity.proxmox:node`]
+          lookups:
+            - query: >
+                fetch `dt.entity.proxmox:node`
+                | fields id, node.relation_record = record(entityId = id, displayName = entity.name)
+              sourceField: node.id
+              lookupField: id
+              fields:
+                - node.relation_record
+      layout:
+        autoGenerate: false
+        cards:
+          - key: proxmox_vm_charts_overview
+            type: CHART_GROUP
+          - type: INJECTIONS
+
+    chartsCards:
+      - key: proxmox_vm_charts_overview
+        target: BOTH
+        mode: NORMAL
+        numberOfVisibleCharts: 8
+        displayName: VM Overview
+        description: Overview of the Proxmox VM
+        charts:
+          - displayName: Memory Used %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: ((proxmox.vm.memory.mem)/(proxmox.vm.memory.max) * 100):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { mem_used = avg(proxmox.vm.memory.mem), mem_limit = avg(proxmox.vm.memory.max) }, by: {  `dt.entity.proxmox:vm`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:vm` == $(entityId)}
+                      | fieldsAdd expression = mem_used[] / mem_limit[] * 100
+                      | fieldsRemove mem_used, mem_limit
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: CPU Usage %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: (proxmox.vm.cpu.usage):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { cpu_usage = avg(proxmox.vm.cpu.usage) }, by: {  `dt.entity.proxmox:vm`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:vm` == $(entityId)}
+                  visualization:
+                    themeColor: BLUE
+
+          - displayName: Disk Availability %
+            visualizationType: GRAPH_CHART
+            graphChartConfig:
+              metrics:
+                - metricSelector: (proxmox.vm.disk.usage):setUnit(Percent)
+                  dqlQuery: >
+                    timeseries { disk_used = avg( proxmox.vm.disk.used ), disk_limit = avg(proxmox.vm.disk.max ) }, by: {  `dt.entity.proxmox:vm`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:vm` == $(entityId)}
+                      | fieldsAdd disk_avail = disk_limit[] - disk_used[]
+                      | fieldsAdd disk_avail_percent = disk_limit[] / disk_avail[] * 100
+                      | fieldsRemove disk_avail, disk_limit, disk_used
+                  visualization:
+                    themeColor: BLUE
+          - displayName: Uptime
+            visualizationType: SINGLE_VALUE
+            singleValueConfig:
+              metric:
+                metricSelector: proxmox.vm.uptime:splitBy("dt.entity.proxmox:vm"):sum:sort(value(max,descending)):last
+                dqlQuery: >
+                  timeseries { uptime_avg = avg(proxmox.vm.uptime) }, by: {  `dt.entity.proxmox:vm`, `dt.entity.proxmox:node`, `dt.entity.proxmox:cluster` }, filter:{`dt.entity.proxmox:vm` == $(entityId)}
+                    | fieldsAdd uptime = arrayLast(uptime_avg)
+                overrideUnit: units.data.hours
+
+    entitiesListCards:
+      - key: proxmox_vm_list_self
+        displayName: VMs
+        pageSize: 10
+        entitiesLimit: 500
+        displayCharts: false
+        enableDetailsExpandability: false
+        numberOfVisibleCharts: 2
+        displayIcons: true
+        columns:
+          - type: RELATION
+            relation:
+              displayName: Virtual Machine
+              entitySelectorTemplate: type(proxmox:vm),toRelationships.runsOn($(entityConditions))
 documents:
   dashboards:
     - displayName: Proxmox Overview
