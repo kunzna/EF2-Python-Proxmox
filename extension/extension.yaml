@@ -1,5 +1,5 @@
 name: custom:com.dynatrace.proxmox-topomaping
-version: 0.1.0
+version: 0.1.1
 minDynatraceVersion: 1.313.0
 minEECVersion: "1.313.0"
 author:
