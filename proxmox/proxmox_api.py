@@ -45,33 +45,20 @@ class ProxmoxClient:
         return self.api
 
     def get_metrics(self, request):
+        JSON = None
         try:
             JSON = json.dumps(self.api(request).get())
             if common_functions.is_valid_json(JSON):
-                self.logger.info(f"nodeMetricsJSON for '{JSON}' is valid JSON.")
+                self.logger.info(f"nodeMetricsJSON for '{request}' is valid JSON.")
             else:
-                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{JSON}'.")
-
+                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{request}'.")
         except Exception as e:
-            self.logger.error(f"Error fetching node metrics for '{JSON}': {e}")
-            JSON = {}  # ✅ Ensure it's defined even on failure
-
+            self.logger.error(f"Error fetching metrics for '{request}': {e}")
+            JSON = json.dumps({})
         return JSON
 
-    def get_metrics_2(self, request):       
-        try:
-            #JSON = self.api(request).get()
-            JSON = json.dumps(self.api(request).get())
-            if common_functions.is_valid_json(JSON):
-                self.logger.info(f"nodeMetricsJSON for '{JSON}' is valid JSON.")
-            else:
-                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{JSON}'.")
-
-        except Exception as e:
-            self.logger.error(f"Error fetching node metrics for '{JSON}': {e}")
-            JSON = {}  # ✅ Ensure it's defined even on failure
-
-        return JSON
+    def get_metrics_2(self, request):
+        return self.get_metrics(request)
 
     def __repr__(self):
-        return f"Cluster({self.name}"
+        return f"ProxmoxClient({self.host})"

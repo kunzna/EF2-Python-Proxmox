@@ -1,7 +1,7 @@
 import logging
 import json
 from proxmoxer import ProxmoxAPI
-from common_functions import common_functions
+from .common_functions import common_functions
 
 default_logger = logging.getLogger(__name__)
 default_logger.setLevel(logging.INFO)
@@ -16,9 +16,6 @@ class ProxmoxClient:
         logger=default_logger,
         verify_ssl=False
     ):
-        self.logger = logger
-
-
         self.logger = logger
         # Patch: Ensure host is always a string
         if isinstance(host, list):
@@ -73,7 +70,7 @@ class ProxmoxClient:
         except Exception as e:
             self.logger.error(f"Error fetching nodes status: {e}")
             nodesStatusJSON = []
-        self.logger.info(f"CFetch and print node status: {nodesStatusJSON}")
+        self.logger.info(f"Fetch and print node status: {nodesStatusJSON}")
         return nodesStatusJSON
     
     def get_node_info(self, nodeStatusJSON):
@@ -82,33 +79,20 @@ class ProxmoxClient:
         return nodeNamesArray
     
     def get_metrics(self, request):
+        JSON = None
         try:
             JSON = json.dumps(self.api(request).get())
             if common_functions.is_valid_json(JSON):
-                self.logger.info(f"nodeMetricsJSON for '{JSON}' is valid JSON.")
+                self.logger.info(f"nodeMetricsJSON for '{request}' is valid JSON.")
             else:
-                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{JSON}'.")
-
+                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{request}'.")
         except Exception as e:
-            self.logger.error(f"Error fetching node metrics for '{JSON}': {e}")
-            JSON = {}  # ✅ Ensure it's defined even on failure
-
+            self.logger.error(f"Error fetching metrics for '{request}': {e}")
+            JSON = json.dumps({})
         return JSON
 
-    def get_metrics_2(self, request):       
-        try:
-            #JSON = self.api(request).get()
-            JSON = json.dumps(self.api(request).get())
-            if common_functions.is_valid_json(JSON):
-                self.logger.info(f"nodeMetricsJSON for '{JSON}' is valid JSON.")
-            else:
-                self.logger.warning(f"Invalid JSON for nodeMetricsJSON for '{JSON}'.")
-
-        except Exception as e:
-            self.logger.error(f"Error fetching node metrics for '{JSON}': {e}")
-            JSON = {}  # ✅ Ensure it's defined even on failure
-
-        return JSON
+    def get_metrics_2(self, request):
+        return self.get_metrics(request)
 
     def __repr__(self):
-        return f"Cluster({self.name}"
+        return f"ProxmoxClient({self.host})"

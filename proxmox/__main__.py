@@ -1,18 +1,11 @@
 from .proxmox_api import ProxmoxClient
 import json
-import os
 import logging
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 
-from dynatrace_extension import Extension, MetricType
-from dynatrace_extension.sdk.communication import divide_into_batches
+from dynatrace_extension import Extension
 from dynatrace_extension.sdk.status import StatusValue, Status
-
-try:
-    from dynatrace import Dynatrace
-except ImportError:
-    pass
 
 class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
     def __init__(self):
@@ -73,9 +66,6 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
         # Ensure cluster_status is a list
         if isinstance(cluster_status, list):
-            cluster_info = {}
-            node_info_list = []
-
             for item in cluster_status:
                 if isinstance(item, dict):
                     item_type = item.get("type")
@@ -162,8 +152,8 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
 
         # Ensure cluster_ha_status is a list
+        cluster_ha_info = {}
         if isinstance(cluster_ha_status, list):
-            cluster_ha_info = {}
 
             for item in cluster_ha_status:
                 if isinstance(item, dict):
@@ -174,7 +164,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                             "quorate": item.get("quorate"),
                             "status": item.get("status")
                         }
-                        print(f"Cluster HA Info: {cluster_ha_info}")
+                        self.logger.info(f"Cluster HA Info: {cluster_ha_info}")
                 else:
                     self.logger.error(f"Unexpected item type: {type(item)} - {item}")
         else:
@@ -315,7 +305,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             self.report_metric(
                 "proxmox.node.loadavg.15min", loadavg_15m, node_dimensions
             )
-            self.logger.info(f"Sent to metrics server for node: {node_name} wirh dimensions: {node_dimensions}")
+            self.logger.info(f"Sent to metrics server for node: {node_name} with dimensions: {node_dimensions}")
 
     def collect_storage(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch storage metrics for each node in cluster
@@ -376,7 +366,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             # Parse the JSON string
             vm_entry_data = json.loads(node_vm_entries)
 
-            # Extrace Node info
+            # Extract Node info
             node_id = node['id']
 
             node_dimensions = {
@@ -392,24 +382,20 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     vm_name = entry.get("name")
                     vm_id = entry.get("vmid")
 
-                    #all_ips = []
                     all_ips = ''
 
                     try:
                         vmIPSubRequest = nodeVmRequest + "/" + str(vm_id) + "/agent/network-get-interfaces"
-                        vm_ip_info = endpoint.get_metrics_2(vmIPSubRequest) 
+                        vm_ip_info = endpoint.get_metrics_2(vmIPSubRequest)
                         agent_info = json.loads(vm_ip_info)
-                        
+
                         for interface in agent_info.get('result', []):
-                            mac_addr = interface.get('hardware-address', 'Unknown')
                             for ip in interface.get('ip-addresses', []):
                                 ip_addr = ip.get('ip-address')
                                 if ip_addr and ip_addr != '127.0.0.1' and ':' not in ip_addr:  # exclude loopback and IPv6
-                                    # self.logger.info(f"    IP: {ip_addr} | MAC: {mac_addr}")
-                                    all_ips = ip_addr #if all_ips == '' else all_ips + ', ' + ip_addr
-                                    # self.logger.info(f"Collected IP: {all_ips} for VM: {vm_name} (ID: {vm_id}) on node: {node_name}")
+                                    all_ips = ip_addr if all_ips == '' else all_ips + ', ' + ip_addr
                     except Exception as e:
-                        print(f"    Could not retrieve IP/MAC: {e}")
+                        self.logger.warning(f"Could not retrieve IP/MAC for VM {vm_name}: {e}")
 
                     # Build VM dimensions with VM IP
                     vm_dimensions = {
@@ -504,7 +490,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             self.report_metric(
                 "proxmox.node.vm", node_vm_count, node_dimensions
             )
-            self.logger.info(f"NATEKUNZ-Sent to metrics server for VM count: {node_vm_count} for node: {node_name} with dimensions: {node_dimensions}")
+            self.logger.info(f"Sent to metrics server for VM count: {node_vm_count} for node: {node_name} with dimensions: {node_dimensions}")
 
     def collect_lxc(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch LXC-Container metrics for each node in cluster
@@ -520,7 +506,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             # Parse the JSON string
             lxc_entry_data = json.loads(node_lxc_entries)
 
-            # Extrace Node info
+            # Extract Node info
             node_id = node['id']
 
             node_dimensions = {
@@ -544,7 +530,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
 
                     lxc_netout = lxc_metrics.get("netout")
                     lxc_uptime = lxc_metrics.get("uptime")
-                    lxc_mawswap = lxc_metrics.get("maxswap")
+                    lxc_maxswap = lxc_metrics.get("maxswap")
                     lxc_diskwrite = lxc_metrics.get("diskwrite")
                     lxc_netin = lxc_metrics.get("netin")
                     lxc_diskread = lxc_metrics.get("diskread")
@@ -579,7 +565,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                         "proxmox.lxc.uptime", lxc_uptime, lxc_dimensions
                     )
                     self.report_metric(
-                        "proxmox.lxc.swap.max", lxc_mawswap, lxc_dimensions
+                        "proxmox.lxc.swap.max", lxc_maxswap, lxc_dimensions
                     )
                     self.report_metric(
                         "proxmox.lxc.disk.write", lxc_diskwrite, lxc_dimensions
@@ -619,7 +605,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             self.report_metric(
                 "proxmox.node.lxc", node_lxc_count, node_dimensions
             )
-            self.logger.info(f"NATEKUNZ-Sent to metrics server for LXC count: {node_lxc_count} for node: {node_name} with dimensions: {node_dimensions}")
+            self.logger.info(f"Sent to metrics server for LXC count: {node_lxc_count} for node: {node_name} with dimensions: {node_dimensions}")
 
     def collect_service(self, endpoint, node_info_list, parent_dimensions: dict):
         # Fetch services status for each node in cluster
@@ -633,7 +619,7 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
             # Parse the JSON string
             service_data = json.loads(node_service_metrics)
 
-            # Extrace Node info
+            # Extract Node info
             node_id = node['id']
 
             # Loop through each service entry for this node
@@ -668,24 +654,12 @@ class ProxmoxExtension(Extension):  # Enable for testing with DT Extensions SDK
                     "proxmox.node.service.state", service_active, service_dimensions
                 )
                 self.report_metric(
-                    "proxmox.node.service.activestate", service_active, service_dimensions
+                    "proxmox.node.service.activestate", service_activestate, service_dimensions
                 )
                 self.report_metric(
                     "proxmox.node.service.unitstate", service_unitstate, service_dimensions
                 )
                 self.logger.info(f"Sent to metrics server for service: {service_name} for node: {node_name} with dimensions: {service_dimensions}")
-
-    def rest_api_metrics(self, mint_lines: list[str]):
-        dt = Dynatrace(os.getenv("DT_API_URL"), os.getenv("DT_API_TOKEN"))
-        batches = divide_into_batches(mint_lines, 1000000, "\n")
-        for batch in batches:
-            lines = batch.decode().splitlines()
-            print(f"Sending {len(lines)} metrics")
-            with open("metrics.txt", "a") as f:
-                f.write("\n".join(lines))
-            r = dt.metrics.ingest(lines)
-            print(r)
-        return []
 
 def main():
     ProxmoxExtension().run()

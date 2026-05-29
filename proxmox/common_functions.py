@@ -1,7 +1,8 @@
 import json
 
 class common_functions:
-        
+
+    @staticmethod
     def is_valid_json(data):
         try:
             json.dumps(data)  # Check if it can be serialized

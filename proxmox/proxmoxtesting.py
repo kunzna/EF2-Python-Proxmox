@@ -1,12 +1,13 @@
 from proxmox_testing_api import ProxmoxClient
 import json
+import os
 
 
-# Connection details
-host = '20.119.75.42'
-user = 'root@pam'
-token_name = 'api'
-token_value = '2d0c4d99-0a38-4be5-9939-bf971530b928'
+# Connection details — set via environment variables or replace with test values
+host = os.environ.get('PROXMOX_HOST', '')
+user = os.environ.get('PROXMOX_USER', 'root@pam')
+token_name = os.environ.get('PROXMOX_TOKEN_NAME', '')
+token_value = os.environ.get('PROXMOX_TOKEN_VALUE', '')
 verify_ssl = False
 
 # Create and initialize Proxmox client
