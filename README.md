@@ -1,109 +1,107 @@
-# custom:com.dynatrace.proxmox
+# Proxmox VE Monitoring Extension
 
-**Latest version:** 0.0.11
-This extension is built using the Dynatrace Extension 2.0 Framework.
-This means it will benefit of additional assets that can help you browse through the data.
+A Dynatrace Extensions 2.0 (EF2) Python extension that provides **full-stack monitoring** for Proxmox Virtual Environment clusters. It connects to the Proxmox REST API via token-based authentication and emits metrics for clusters, nodes, storage, QEMU virtual machines, LXC containers, and node services.
 
-## Topology
+| | |
+|---|---|
+| **Extension ID** | `custom:com.dynatrace.proxmox-topomaping` |
+| **Module** | `proxmox` |
+| **Framework** | Dynatrace Extensions 2.0 (Python) |
+| **Min. Dynatrace** | 1.908.0 |
+| **Min. EEC** | 1.313.0 |
+| **Python** | ≥ 3.10 |
+| **Platform** | Remote or Local (EEC or OneAgent host) |
 
-This extension will create the following types of entities:
-* Cluster (proxmox:cluster)
-* Node (proxmox:node)
-* Virtual Machine (proxmox:vm)
+---
 
-## Metrics
+## What it monitors
 
-This extension will collect the following metrics:
-* Split by Cluster:
-  * Node Count (`proxmox.cluster.node.count`)
-    Total Nodes running in the Cluster (as Count)
-  * Node Online Count (`proxmox.cluster.node.online.count`)
-    Total Nodes running and online in the Cluster (as Count)
-* Split by Cluster, Node:
-  * Online Status (`proxmox.node.online`)
-    Running State of the node (as State)
-  * CPU Used (`proxmox.node.cpu.usage`)
-    The current cpu usage (as Percent)
-  * CPU Wait (`proxmox.node.cpu.wait`)
-    The current cpu wait (as Percent)
-  * CPU Idle (`proxmox.node.cpu.idle`)
-    The current cpu idle (as Count)
-  * Memory Free (`proxmox.node.memory.free`)
-    The free memory in bytes (as Byte)
-  * Memory Total (`proxmox.node.memory.total`)
-    The total memory in bytes (as Byte)
-  * Memory Used (`proxmox.node.memory.used`)
-    The used memory in bytes (as Byte)
-  * Node Uptime (`proxmox.node.uptime`)
-    Node uptime in seconds (as Second)
-  * CPU Load (1m) (`proxmox.node.loadavg.1min`)
-    Average 1 minute CPU Load (as Percent)
-  * CPU Load (5m) (`proxmox.node.loadavg.5min`)
-    Average 5 minute CPU Load (as Percent)
-  * CPU Load (15m) (`proxmox.node.loadavg.15min`)
-    Average 15 minute CPU Load (as Percent)
-  * Root FS Available (`proxmox.node.rootfs.avail`)
-    The available bytes in the root filesystem (as Byte)
-  * Root FS Used (`proxmox.node.rootfs.used`)
-    The used bytes in the root filesystem (as Byte)
-  * Root FS Free (`proxmox.node.rootfs.free`)
-    The free bytes in the root filesystem (as Byte)
-  * Root FS Total (`proxmox.node.rootfs.total`)
-    The total bytes in the root filesystem (as Byte)
-  * Swap Free (`proxmox.node.swap.free`)
-    The free swap space (as Byte)
-  * Swap Total (`proxmox.node.swap.total`)
-    The total swap space (as Byte)
-  * Swap Used (`proxmox.node.swap.used`)
-    The used swap space (as Byte)
-  * Storage Total (`proxmox.node.storage.total`)
-    Total storage space in bytes (as Byte)
-  * Storage Used (`proxmox.node.storage.used`)
-    Used storage space in bytes (as Byte)
-  * Storage Available (`proxmox.node.storage.avail`)
-    Available storage space in bytes (as Byte)
-  * Service State (`proxmox.node.service.state`)
-    Running State of the service (as State)
-  * Service Active State (`proxmox.node.service.activestate`)
-    Active State of the service (as State)
-  * Service Unit State (`proxmox.node.service.unitstate`)
-    Unit State of the service (as State)
-* Split by Cluster, Node, Virtual Machine:
-  * Memory Free (`proxmox.vm.freemem`)
-    Currently free memory in bytes (as Byte)
-  * Balloon Memory (`proxmox.vm.balloon`)
-    Currently Balloon memory in bytes (as Byte)
-  * QMP Monitor Status (`proxmox.vm.qmpstatus`)
-    VM run state from the query-status QMP monitor command (as State)
-  * Network Ingress (`proxmox.vm.network.netin`)
-    The amount of traffic in bytes that was sent to the guest over the network since it was started (as Byte)
-  * Network Egress (`proxmox.vm.network.netout`)
-    The amount of traffic in bytes that was sent from the guest over the network since it was started (as Byte)
-  * Disk Write (`proxmox.vm.disk.diskwrite`)
-    The amount of bytes the guest wrote from it's block devices since the guest was started (as Byte)
-  * Disk Size (`proxmox.vm.disk.maxdisk`)
-    Root disk size in bytes (as Byte)
-  * Disk Read (`proxmox.vm.disk.diskread`)
-    The amount of bytes the guest read from it's block devices since the guest was started (as Byte)
-  * Memory Total (`proxmox.vm.memory.max`)
-    Maximum memory in bytes (as Byte)
-  * Memory Used (`proxmox.vm.memory.mem`)
-    Currently used memory in bytes (as Byte)
-  * CPU Usable (`proxmox.vm.cpu.cpuusable`)
-    Maximum usable CPUs (as Percent)
-  * CPU Usage (`proxmox.vm.cpu.cpuusage`)
-    Current CPU usage (as Percent)
-  * VM Uptime (`proxmox.vm.uptime`)
-    Uptime in seconds (as Second)
-  * VM Status (`proxmox.vm.status`)
-    Running Status of the VM (as State)
+Every poll cycle (default: 60 seconds per endpoint) the extension collects metrics across six domains:
 
-# Configuration
+| Domain | Feature Set | Metrics collected |
+|---|---|---|
+| Cluster | `Cluster` | Total nodes, online nodes, HA quorate, HA status, SDN status |
+| Node | `Node` | CPU usage/wait/idle, memory, swap, rootfs, load average, uptime, online status, VM count, LXC count |
+| Node Storage | `Node-Storage` | Total, used, available capacity per active storage volume |
+| Node Services | `Node-Services` | Running state, active-state, and unit-state per systemd service |
+| QEMU VMs | `VM` | CPU, memory (with balloon), disk I/O, network I/O, QMP status, IP addresses, uptime |
+| LXC Containers | `CONTAINER` | CPU, memory, swap, disk I/O, network I/O, status, uptime |
 
-## Feature sets
+A complete topology of `cluster → node → vm / container` is synthesized from the metric dimensions and rendered as native Dynatrace entities.
 
-Feature sets can be used to opt in and out of metric data collection.
-This extension groups together metrics within the following feature sets:
+---
 
-* default
+## Documentation
 
+The full doc set is split by audience:
+
+| Document | Audience | Purpose |
+|---|---|---|
+| **[ARCHITECTURE.md](ARCHITECTURE.md)** | Engineers maintaining or extending the code | Deep-dive into internal mechanics: runtime model, API client design, execution flow, concurrency model, metric and topology model, and known design quirks. **Start here if you're modifying the extension.** |
+| **[DEPLOYMENT.md](DEPLOYMENT.md)** | Operators rolling the extension out to a tenant | Step-by-step install guide: prerequisites, Proxmox token setup, signing, upload, monitoring configuration, validation, and a diagnostic table for common deployment failures. **Start here if you're shipping it.** |
+| **[KNOWLEDGE_TRANSFER.md](KNOWLEDGE_TRANSFER.md)** | New team members getting onboarded | Broad-scope reference covering purpose, repo layout, configuration fields, metrics catalogue, topology catalogue, alerts, and glossaries for both Proxmox and Dynatrace EF2 terminology. Use it as a reference handbook. |
+
+---
+
+## Quickstart for developers
+
+For a real install, follow [DEPLOYMENT.md](DEPLOYMENT.md) — the steps below are for local development only.
+
+```bash
+# 1. Install in editable mode
+pip install -e ".[dev]"
+
+# 2. Edit activation.json with your Proxmox host IP, user, and API token
+
+# 3. Run a single simulated cycle against your environment
+dt-sdk run
+
+# 4. Build a release artifact (after bumping version in extension/extension.yaml)
+dt-sdk build .
+dt-sdk sign dist/*.zip
+dt-sdk upload dist/*.zip --url https://<tenant>.live.dynatrace.com --api-token <token>
+```
+
+---
+
+## Repository layout
+
+```
+EF2-Python-Proxmox/
+├── proxmox/
+│   ├── __init__.py                 ← empty marker file
+│   ├── __main__.py                 ← all runtime logic (~680 lines)
+│   ├── proxmox_api.py              ← ProxmoxClient wrapper around proxmoxer
+│   ├── common_functions.py         ← JSON validation utility
+│   ├── proxmox_testing_api.py      ← extended client used by the test script
+│   └── proxmoxtesting.py           ← standalone dev/test script (not production)
+├── extension/
+│   ├── extension.yaml              ← EF2 manifest: metrics, topology, version
+│   ├── activationSchema.json       ← UI configuration schema
+│   └── documents/
+│       └── proxmox_overview.dashboard.json  ← built-in overview dashboard
+├── setup.py                        ← packaging (version parsed from extension.yaml)
+├── ruff.toml                       ← linter config
+├── activation.json                 ← local dev shim for `dt-sdk run` — NOT production
+├── secrets.json                    ← local dev placeholder — do NOT put real values here
+├── README.md                       ← this file
+├── ARCHITECTURE.md                 ← internal mechanics
+├── DEPLOYMENT.md                   ← install & rollout guide
+└── KNOWLEDGE_TRANSFER.md           ← onboarding reference
+```
+
+---
+
+## Heads-up for operators
+
+Two things are worth knowing before deploying:
+
+1. **SSL verification is hardcoded to `False`.** The `ProxmoxClient` always passes `verify_ssl=False` regardless of environment. This is intentional for self-hosted Proxmox environments that typically use self-signed certificates, but it means TLS certificate validation is not enforced. Plan to address this if your security policy requires it.
+
+2. **VM IP collection requires the QEMU guest agent.** The extension calls the Proxmox guest-agent API (`/agent/network-get-interfaces`) to retrieve VM IP addresses. If the guest agent is not installed and running inside a VM, the IP dimension will be blank for that VM — the extension logs a warning and continues. This does not affect any other metric.
+
+---
+
+## License
+
+See [LICENSE](LICENSE).
